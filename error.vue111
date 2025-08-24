@@ -1,0 +1,33 @@
+<template>
+	<div class="error-content pt50">
+		<a-empty description=""></a-empty>
+		<h1 v-if="error.statusCode === 404">
+			Page not found {{ JSON.stringify(error) }}
+		</h1>
+		<h1 v-else>ERROR</h1>
+		<a-button type="primary"><nuxt-link to="/">Home</nuxt-link></a-button>
+	</div>
+</template>
+<script lang="ts" setup>
+	import { computed } from 'vue';
+	import { useCommonStore } from '~/stores/common';
+
+	const commonStore = useCommonStore();
+	const error = defineProps<{
+		error: { statusCode: number; message: string };
+	}>();
+	const error1 = useError();
+	console.log('error===>1', error1);
+	console.log('error===>', error);
+
+	const theme = computed(() => {
+		return commonStore.theme;
+	});
+	const changeState = commonStore.changeState;
+</script>
+<style lang="less" scoped>
+	.error-content {
+		min-height: calc(100vh - 232px);
+		text-align: center;
+	}
+</style>

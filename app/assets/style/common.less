@@ -1,0 +1,324 @@
+/*common css*/
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    -webkit-tap-highlight-color: transparent;
+    height: initial;
+}
+
+h1,h2,h3,h4,h5,h6,p {
+    margin-bottom: 0;
+}
+
+input,
+button {
+    font-family: 'arial';
+    padding: 0;
+    margin: 0;
+    border: none;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+input,
+textarea {
+    outline: none;
+    background: rgba(0, 0, 0, 0)!important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+a:link,
+a:visited {
+    color: var(--activeColor);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--activeColor);
+    text-decoration: none;
+}
+
+a:active {
+    color: var(--activeColor);
+}
+
+ul,
+li,
+ol,
+dl {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+em {
+  font-style: italic!important;
+}
+
+.pa {
+  position: absolute;
+}
+
+.pr {
+  position: relative;
+}
+
+.pf {
+  position: fixed;
+}
+
+.db {
+  display: block;
+}
+
+.df {
+  display: flex;
+}
+
+.flexDirCol {
+  flex-direction: column;
+}
+
+.justConBet {
+  justify-content: space-between;
+}
+
+.justConAround {
+  justify-content: space-around;
+}
+
+.justConEnd {
+  justify-content: end;
+}
+
+.justConCen {
+  justify-content: center;
+}
+
+.flexWrap {
+  flex-wrap: wrap;
+}
+
+.mCenter {
+  display: block;
+  margin: 0 auto;
+}
+
+.db {
+  display: block;
+}
+
+.di {
+  display: inline;
+}
+
+.dib {
+  display: inline-block;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.dn {
+  display: none;
+}
+
+.ohide {
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+
+.clearfix {
+  &::before,
+  &::after {
+    content: "";
+    height: 0;
+    line-height: 0;
+    display: block;
+    visibility: hidden;
+    clear: both;
+  }
+}
+
+.pcenter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.wCenter {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.mwCenter {
+  margin: 0 auto;
+}
+
+.hCenter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.tCenter {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+}
+
+.tHorCenter {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -moz-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+}
+
+.tVerCenter {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+}
+
+.al-center {
+  display: flex;
+  align-items: center;
+}
+
+.b-sizing {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.cursorPointer {
+  cursor: pointer;
+}
+
+.overeli {
+  overflow: hidden;
+  /*超出部分隐藏*/
+  text-overflow: ellipsis;
+  /* 超出部分显示省略号 */
+  white-space: nowrap;
+  /*规定段落中的文本不进行换行 */
+}
+
+//多行溢出 * 仅支持-webkit 浏览器
+.mulEllipsis {
+  /*! autoprefixer: off */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-all;
+}
+
+.elli2 {
+/*! autoprefixer: off */
+-webkit-line-clamp: 2;
+}
+
+.elli3 {
+/*! autoprefixer: off */
+-webkit-line-clamp: 3;
+}
+
+.elli4 {
+/*! autoprefixer: off */
+-webkit-line-clamp: 4;
+}
+
+.elli5 {
+/*! autoprefixer: off */
+-webkit-line-clamp: 5;
+}
+
+.elli10 {
+/*! autoprefixer: off */
+-webkit-line-clamp: 10;
+}
+
+.anyoverli {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.noSelect {
+  -webkit-touch-callout: none;
+  /*系统默认菜单被禁用*/
+  -webkit-user-select: none;
+  /*webkit浏览器*/
+  -khtml-user-select: none;
+  /*早期浏览器*/
+  -moz-user-select: none;
+  /*火狐*/
+  -ms-user-select: none;
+  /*IE10*/
+  user-select: none;
+}
+
+html {
+  font-family:
+    'pingfang'
+    'Source Sans Pro',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    'Helvetica Neue',
+    Arial,
+    sans-serif;
+  font-size: 16px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  background: var(--backgroundColor);
+  color: var(--textColor);
+  transform-origin: left top;
+  min-width: 1184px;
+}
+
+html,body {
+  width: 100%;
+}
