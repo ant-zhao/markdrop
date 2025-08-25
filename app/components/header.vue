@@ -51,11 +51,11 @@
 
 	// data
 	const menusList = ref<MenuItem[]>([
-		{ name: '首页', path: '/' },
-		{ name: '解决方案', path: '/solution' },
-		{ name: '新闻', path: '/news-1' },
-		{ name: '合作', path: '/hezuo' },
-		{ name: '我们', path: '/us' },
+		// { name: '首页', path: '/' },
+		// { name: '解决方案', path: '/solution' },
+		// { name: '新闻', path: '/news-1' },
+		// { name: '合作', path: '/hezuo' },
+		// { name: '我们', path: '/us' },
 	]);
 
 	// scroll handler
@@ -111,12 +111,12 @@
 						width: 164px;
 						height: 55px;
 						margin-bottom: 0;
-						a {
-							width: 100%;
-							height: 100%;
-							background: url('~@/assets/imgs/logo.png') no-repeat center/auto
-								100%;
-						}
+						// a {
+						// 	width: 100%;
+						// 	height: 100%;
+						// 	background: url('~@/assets/imgs/logo.png') no-repeat center/auto
+						// 		100%;
+						// }
 					}
 					p {
 						font-size: 20px;

@@ -1,0 +1,24 @@
+:root {
+    --headColor: rgba(0, 0, 0, 0.85);
+    --textColor: rgba(0, 0, 0, 0.85);
+    --lightColor: #ffffff;
+    --darkColor: #000000;
+    --borderColor: #e5e5e5;
+    --disabledColor: rgba(0, 0, 0, 0.25);
+    --backgroundColor: #ffffff;
+    --hoverBackgroundColor: #fff8f0;
+    --labelbackgroundColor: #e5e5e5;
+    --opacityBackgroudColor: rgba(255,255,255,.8);
+    --activeColor: #FDB41B;
+    --activeHoverColor: #fab41c;
+    --shadowColor: rgba(0, 0, 0, .1);
+    --hoverShadowColor: rgba(0, 0, 0, 0.3);
+    --hoverColor: #f7b527;
+    --hintColor: #777777;
+    --labelColor: rgba(0,0,0,.45);
+    --primaryBtnColor: #ffffff;
+    --placeholderColor: #bbbbbb;
+    --headerBackgroundColor: #ffffff;
+    --footerBackgroundColor: #f9f9f9;
+    --uploaderBgColor: #fafafa;
+}

@@ -26,12 +26,12 @@
 			}
 			.left {
 				&-top {
-					h2 {
-						width: 185px;
-						height: 67px;
-						background: url('~@/assets/imgs/logo.png') no-repeat center/100%
-							100%;
-					}
+					// h2 {
+					// 	width: 185px;
+					// 	height: 67px;
+					// 	background: url('~@/assets/imgs/logo.png') no-repeat center/100%
+					// 		100%;
+					// }
 					.more {
 						padding-left: 140px;
 						p {

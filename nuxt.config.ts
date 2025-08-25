@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	devtools: { enabled: true },
-	ssr: false,
+	// ssr: false,
 	app: {
 		head: {
 			title: 'Mark Drop', // 默认备用标题
@@ -31,5 +31,5 @@ export default defineNuxtConfig({
 		},
 	},
 	css: ['~/assets/style/common.less'],
-	modules: ['@pinia/nuxt'],
+	modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss'],
 });
