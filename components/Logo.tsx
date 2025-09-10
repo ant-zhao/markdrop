@@ -9,8 +9,8 @@ export default function Logo(props: React.SVGProps<SVGSVGElement>) {
       xmlnsXlink="http://www.w3.org/1999/xlink"
       preserveAspectRatio="xMidYMid meet"
       viewBox="344.5639097744361 330.27819548872174 111.73684210526318 91.21804511278197"
-      width="53.87"
-      height="43.61"
+      width="1.24em"
+      height="1em"
       {...props}
     >
       <defs>
