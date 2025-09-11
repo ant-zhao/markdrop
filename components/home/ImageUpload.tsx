@@ -1,5 +1,3 @@
-"use client";
-
 import HomeIcon2 from "@/assets/icon/HomeIcon2";
 import { useState, DragEvent } from "react";
 
@@ -62,7 +60,7 @@ export default function ImageUpload() {
             key={idx}
             src={src}
             alt="default"
-            className="w-20 h-20 object-cover rounded-lg border-2 border-gray-200 hover:border-blue-500 cursor-pointer"
+            className="w-20 h-20 object-cover rounded-sm border-2 border-gray-200 hover:border-blue-500 cursor-pointer"
             onClick={() => alert(`You selected image: ${src}`)}
           />
         ))}

@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+/* Core theme configuration */
+@theme {
+  /* Colors */
+  /* Copied from https://tailwindcss.com/docs/theme#default-theme-variable-reference */
+  --color-primary-50: #f0f2ff;
+  --color-primary-100: #d9e0ff;
+  --color-primary-200: #b3c2ff;
+  --color-primary-300: #8ca3ff;
+  --color-primary-400: #6685ff;
+  --color-primary-500: #5B70F8;
+  --color-primary-600: #4a5cd6;
+  --color-primary-700: #3b49b5;
+  --color-primary-800: #2c368f;
+  --color-primary-900: #1d245d;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -17,6 +33,10 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+html {
+  font-size: clamp(12px, 1.5vw, 18px);
 }
 
 body {
