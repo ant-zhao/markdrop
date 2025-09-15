@@ -30,7 +30,7 @@ const Header = () => {
   }, [headerRef]);
 
 
-  let headerClass = 'w-full py-8'
+  let headerClass = 'w-full pt-4'
   if (siteMetadata.stickyNav || fixedPages.includes(pathname)) {
     headerClass += ' top-0 left-0 z-50'
   }
@@ -44,7 +44,7 @@ const Header = () => {
         <div
           ref={headerRef}
           className={cx('flex items-center w-full justify-between sm:px-4 sm:rounded-[32px] py-2 gap-4', {
-            'bg-white/30 backdrop-blur-md shadow-md': scrolled,
+            'bg-white/60 backdrop-blur-md shadow-md': scrolled,
           })}
         >
           <Link href="/" aria-label={siteMetadata.headerTitle} className='flex-shrink-0'>

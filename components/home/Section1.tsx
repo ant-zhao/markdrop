@@ -38,7 +38,7 @@ const Section1 = () => {
   return (
     <section className="pt-28 w-full bg-gradient-to-bl from-[#FFF6F2] via-[#FFF9EF] to-[#F0FFFD]">
       <SectionContainer>
-        <section className="w-full overflow-hidden text-center">
+        <div className="w-full overflow-hidden text-center">
           <div className="flex items-center justify-center">
             <span className="text-4xl pr-2">
               <HomeIcon1 />
@@ -72,7 +72,7 @@ const Section1 = () => {
             ))}
           </div>
           <div
-            className="mx-auto max-w-2xl xl:max-w-3xl h-[22rem] sm:h-[24rem] p-2 my-6 border-primary-300 rounded-sm border-dashed border"
+            className="mx-auto max-w-2xl xl:max-w-3xl p-2 my-8 border-primary-300 rounded-sm border-dashed border"
           >
             <ImageSilder
               left={cases[caseIndex].left}
@@ -80,7 +80,7 @@ const Section1 = () => {
               largeLine
             />
           </div>
-        </section>
+        </div>
       </SectionContainer>
     </section>
   )

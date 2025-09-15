@@ -1,6 +1,11 @@
 import React, { useState, useRef } from 'react';
+import Image, { StaticImageData } from 'next/image';
 
-const ImageSlider = ({ left, right, largeLine }: { left: string, right: string, largeLine?: boolean }) => {
+const ImageSlider = ({ left, right, largeLine }: {
+  left: string,
+  right: string,
+  largeLine?: boolean,
+}) => {
   const [position, setPosition] = useState(50);
   const sliderRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
@@ -28,19 +33,18 @@ const ImageSlider = ({ left, right, largeLine }: { left: string, right: string, 
 
   return (
     <div
-      className="relative"
+      className="relative w-full"
       ref={sliderRef}
       style={{
-        width: '100%',
-        height: '100%',
+        paddingTop: '58%'
       }}
     >
-      <div className="select-none pointer-events-none w-full h-full">
-        <div className="w-full h-full rounded-sm overflow-hidden">
+      <div className="absolute inset-0 select-none pointer-events-none w-full h-full rounded-sm overflow-hidden">
+        <div className="w-full h-full">
           <img src={right} alt="Image 1" className="object-cover w-full h-full" />
         </div>
         <div
-          className="absolute w-full h-full left-0 top-0 rounded-sm overflow-hidden"
+          className="absolute w-full h-full left-0 top-0"
           style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
         >
           <img src={left} alt="Image 2" className="object-cover w-full h-full" />

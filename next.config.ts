@@ -65,6 +65,14 @@ const nextConfig: NextConfig = {
   eslint: {
     dirs: ['app', 'pages', 'components', 'layouts', 'scripts'],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**", // 不推荐生产环境用
+      },
+    ],
+  },
   async headers() {
     return [
       {
