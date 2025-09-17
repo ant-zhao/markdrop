@@ -37,14 +37,14 @@ const Section3 = () => {
         </div>
         <div className="w-full flex flex-col md:flex-row items-center gap-2 pt-10">
           <div className="w-full md:w-3/5">
-            {infos.map((info, index) => (
-              <div className="flex items-center gap-4 pt-8">
+            {infos.map((info) => (
+              <div className="flex items-center gap-4 pt-8" key={info.title}>
                 <Image
                   src={info.icon}
                   alt="feature"
                   className="w-[4rem] h-[4rem]"
                 />
-                <div key={index} className="flex-1 flex flex-col gap-2">
+                <div className="flex-1 flex flex-col gap-2">
                   <h3 className="text-[1rem] font-bold">{info.title}</h3>
                   <p className="text-[0.7rem] text-[#000000] py-1 leading-tight">{info.description}</p>
                 </div>
