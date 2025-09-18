@@ -1,200 +1,139 @@
-import Link from "next/link";
-import Logo from "./Logo";
+// components/Footer.tsx
+"use client";
 
-export default function Footer({ border = false }: { border?: boolean }) {
+import { Fragment } from "react";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { FaFacebookF, FaInstagram, FaYoutube, FaPinterestP, FaTiktok } from "react-icons/fa";
+import { IoIosArrowDown } from "react-icons/io";
+
+export default function Footer() {
   return (
-    <footer>
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        {/* Top area: Blocks */}
-        <div
-          className={`grid gap-10 py-8 sm:grid-cols-12 md:py-12 ${border ? "border-t [border-image:linear-gradient(to_right,transparent,var(--color-slate-200),transparent)1]" : ""}`}
-        >
-          {/* 1st block */}
-          <div className="space-y-2 sm:col-span-12 lg:col-span-4">
-            <div>
-              <Logo />
-            </div>
-            <div className="text-sm text-gray-600">
-              &copy; Cruip.com - All rights reserved.
-            </div>
+    <footer className="bg-black text-white px-6 md:px-12 py-10">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-0 md:justify-between">
+
+        {/* LOGO + 社交 */}
+        <div>
+          <h2 className="font-bold text-lg mb-4">LOGO</h2>
+          <div className="flex space-x-4 mb-6">
+            <FaFacebookF className="w-5 h-5 cursor-pointer" />
+            <FaInstagram className="w-5 h-5 cursor-pointer" />
+            <FaYoutube className="w-5 h-5 cursor-pointer" />
+            <FaPinterestP className="w-5 h-5 cursor-pointer" />
+            <FaTiktok className="w-5 h-5 cursor-pointer" />
+          </div>
+        </div>
+
+        {/* HELP */}
+        <div>
+          <h3 className="font-semibold mb-4">HELP</h3>
+          <ul className="space-y-2 text-sm">
+            <li>Return & Warranty</li>
+            <li>Shipping & Payment</li>
+            <li>Terms Of Service</li>
+            <li>Privacy Policy</li>
+          </ul>
+        </div>
+
+        {/* 邮件订阅 */}
+        <div className="md:pr-8">
+          <h3 className="font-semibold mb-4">Receive Sacred Updates.</h3>
+          <form className="flex bg-white text-black text-[0.8rem]">
+            <input
+              type="email"
+              placeholder="Email"
+              className="w-full px-3 py-2 text-black font-medium focus:outline-none placeholder:text-black"
+            />
+            <button type="submit" className="px-2 py-2 cursor-pointer">
+              →
+            </button>
+          </form>
+        </div>
+
+        {/* INFORMATION */}
+        <div>
+          <h3 className="font-semibold mb-4">INFORMATION</h3>
+          <ul className="space-y-2 text-sm">
+            <li>Contact Us</li>
+            <li>Affiliate Program</li>
+            <li>About Us</li>
+            <li>Track Your Package</li>
+            <li>Payment Method</li>
+            <li>Wholesale</li>
+          </ul>
+        </div>
+
+        {/* contact us */}
+        <div>
+          <h3 className="font-semibold mb-4">CONTACT US</h3>
+          <ul className="space-y-2 text-sm">
+            <li>service@HximaAura.com</li>
+            <li>Mon - Fri 10:00 AM – 19:00 PM</li>
+            <li>We aim to reply within 24–48 hours on business days</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* 底部语言 + 版权 + 支付方式 */}
+      <div className="mt-10 flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+        <div>
+          {/* 语言和货币选择 */}
+          <div className="flex space-x-4">
+            <Menu as="div" className="relative">
+              <MenuButton className="flex items-center px-4 leading-8 border-[0.5px] rounded-[2rem]">
+                <span className="pr-2">English</span>
+                <IoIosArrowDown />
+              </MenuButton>
+              <MenuItems anchor="top" modal={false} className="absolute mt-2 bg-white text-black rounded shadow">
+                <MenuItem as={Fragment}>
+                  {({ active }) => (
+                    <button className={`block px-4 py-2 ${active && "bg-gray-100"}`}>
+                      English
+                    </button>
+                  )}
+                </MenuItem>
+                <MenuItem as={Fragment}>
+                  {({ active }) => (
+                    <button className={`block w-full px-4 py-2 text-left ${active && "bg-gray-100"}`}>
+                      中文
+                    </button>
+                  )}
+                </MenuItem>
+              </MenuItems>
+            </Menu>
+
+            <Menu as="div" className="relative">
+              <MenuButton className="flex items-center px-4 leading-8 border-[0.5px] rounded-[2rem]">
+                <span className="pr-2">China (CNY ¥)</span>
+                <IoIosArrowDown />
+              </MenuButton>
+              <MenuItems anchor="top" modal={false} className="absolute mt-2 bg-white text-black rounded shadow">
+                <MenuItem as={Fragment}>
+                  {({ active }) => (
+                    <button className={`block px-4 py-2 ${active && "bg-gray-100"}`}>
+                      China (CNY ¥)
+                    </button>
+                  )}
+                </MenuItem>
+                <MenuItem as={Fragment}>
+                  {({ active }) => (
+                    <button className={`block w-full px-4 py-2 text-left ${active && "bg-gray-100"}`}>
+                      USD ($)
+                    </button>
+                  )}
+                </MenuItem>
+              </MenuItems>
+            </Menu>
           </div>
 
-          {/* 2nd block */}
-          <div className="space-y-2 sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h3 className="text-sm font-medium">Product</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Features
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Integrations
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Pricing & Plans
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Changelog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Our method
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* 版权 */}
+          <p className="text-sm py-8">© 2025 HimaAura Energy, All rights reserved.</p>
+        </div>
 
-          {/* 3rd block */}
-          <div className="space-y-2 sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h3 className="text-sm font-medium">Company</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  About us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Diversity & Inclusion
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Financial statements
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* 4th block */}
-          <div className="space-y-2 sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h3 className="text-sm font-medium">Resources</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Community
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Terms of service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-gray-600 transition hover:text-gray-900"
-                  href="#0"
-                >
-                  Report a vulnerability
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* 5th block */}
-          <div className="space-y-2 sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h3 className="text-sm font-medium">Social</h3>
-            <ul className="flex gap-1">
-              <li>
-                <Link
-                  className="flex items-center justify-center text-blue-500 transition hover:text-blue-600"
-                  href="#0"
-                  aria-label="Twitter"
-                >
-                  <svg
-                    className="h-8 w-8 fill-current"
-                    viewBox="0 0 32 32"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="m13.063 9 3.495 4.475L20.601 9h2.454l-5.359 5.931L24 23h-4.938l-3.866-4.893L10.771 23H8.316l5.735-6.342L8 9h5.063Zm-.74 1.347h-1.457l8.875 11.232h1.36l-8.778-11.232Z"></path>
-                  </svg>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex items-center justify-center text-blue-500 transition hover:text-blue-600"
-                  href="#0"
-                  aria-label="Medium"
-                >
-                  <svg
-                    className="h-8 w-8 fill-current"
-                    viewBox="0 0 32 32"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M23 8H9a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1Zm-1.708 3.791-.858.823a.251.251 0 0 0-.1.241V18.9a.251.251 0 0 0 .1.241l.838.823v.181h-4.215v-.181l.868-.843c.085-.085.085-.11.085-.241v-4.887l-2.41 6.131h-.329l-2.81-6.13V18.1a.567.567 0 0 0 .156.472l1.129 1.37v.181h-3.2v-.181l1.129-1.37a.547.547 0 0 0 .146-.472v-4.749a.416.416 0 0 0-.138-.351l-1-1.209v-.181H13.8l2.4 5.283 2.122-5.283h2.971l-.001.181Z"></path>
-                  </svg>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="flex items-center justify-center text-blue-500 transition hover:text-blue-600"
-                  href="#0"
-                  aria-label="Github"
-                >
-                  <svg
-                    className="h-8 w-8 fill-current"
-                    viewBox="0 0 32 32"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M16 8.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V22c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z"></path>
-                  </svg>
-                </Link>
-              </li>
-            </ul>
-          </div>
+        {/* 支付方式 (示意) */}
+        <div className="flex space-x-2">
+          <img src="/applepay.svg" alt="Apple Pay" className="h-6" />
+          <img src="/visa.svg" alt="Visa" className="h-6" />
+          <img src="/mastercard.svg" alt="MasterCard" className="h-6" />
         </div>
       </div>
     </footer>
