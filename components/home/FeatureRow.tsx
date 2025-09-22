@@ -1,7 +1,7 @@
 // components/FeatureRow.tsx
 import React from "react";
 import Image, { StaticImageData } from "next/image";
-import ImageSilder from "@/components/home/ImageSilder";
+import ImageSilder from "@/components/common/ImageSilder";
 
 interface FeatureRowProps {
   images: (string | StaticImageData)[];

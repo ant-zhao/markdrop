@@ -1,5 +1,5 @@
 import Image from "next/image";
-import SectionContainer from "@/components/SectionContainer";
+import SectionContainer from "@/components/common/SectionContainer";
 import image1 from "@/assets/image/home/Group69@2x.webp";
 import image2 from "@/assets/image/home/Group70@2x.webp";
 import image3 from "@/assets/image/home/Group71@2x.webp";

@@ -5,10 +5,10 @@ import cx from 'classnames';
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks, { fixedPages } from '@/data/headerNavLinks'
 import Logo from './Logo'
-import Link from './Link'
+import Link from './common/Link'
 import MobileNav from './MobileNav'
 import UserState from './UserState'
-import SectionContainer from "./SectionContainer";
+import SectionContainer from "./common/SectionContainer";
 
 const Header = () => {
   const headerRef = useRef<HTMLDivElement>(null);

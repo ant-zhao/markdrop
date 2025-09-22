@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Transition } from '@headlessui/react';
-import SectionContainer from "@/components/SectionContainer";
+import SectionContainer from "@/components/common/SectionContainer";
 import PlusIcon from "@/assets/icon/Plus";
 
 const FAQItem = ({ question, answer, index }: {

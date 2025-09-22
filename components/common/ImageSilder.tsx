@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import Image, { StaticImageData } from 'next/image';
 
 const ImageSlider = ({ left, right, largeLine }: {
   left: string,

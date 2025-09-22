@@ -1,4 +1,4 @@
-import SectionContainer from "@/components/SectionContainer"
+import SectionContainer from "@/components/common/SectionContainer"
 import FeatureRow from "@/components/home/FeatureRow"
 import image1 from "@/assets/image/home/image_1.webp";
 

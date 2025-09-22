@@ -1,5 +1,5 @@
 
-import SectionContainer from "@/components/SectionContainer";
+import SectionContainer from "@/components/common/SectionContainer";
 import { useEffect, useRef } from "react";
 
 // 评论数据（评分、标题、内容、用户头像、姓名、地区）

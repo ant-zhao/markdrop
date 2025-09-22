@@ -1,7 +1,7 @@
 import HomeIcon1 from "@/assets/icon/HomeIcon1"
-import SectionContainer from "../SectionContainer"
-import ImageUpload from "./ImageUpload"
-import ImageSilder from "./ImageSilder"
+import SectionContainer from "@/components/common/SectionContainer"
+import ImageUpload from "@/components/common/ImageUpload"
+import ImageSilder from "@/components/common/ImageSilder"
 import { useState } from "react"
 
 const cases = [
@@ -50,7 +50,9 @@ const Section1 = () => {
           </div>
           <h1 className="text-2xl font-bold">Free Watermark Remover Online - Remove Any Watermark with AI</h1>
           <p className="text-sm text-[#000000] py-4">Get high-quality, watermark-free photos instantly. No Photoshop or editing skills needed.</p>
-          <ImageUpload />
+          <div className="w-full pt-16">
+            <ImageUpload />
+          </div>
           <h2 className="text-3xl font-bold pt-24">Remove Watermarks for Any Use Case</h2>
           <p className="text-[0.9rem] text-[#000000] py-1">Perfect for personal, business, and creative needs clean photos in seconds</p>
 

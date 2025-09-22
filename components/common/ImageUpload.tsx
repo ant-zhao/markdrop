@@ -8,7 +8,11 @@ const defaultImages = [
   "https://picsum.photos/80",
 ];
 
-export default function ImageUpload() {
+type ImageUploadProps = {
+  showSampleImage?: boolean;
+};
+
+export default function ImageUpload({ showSampleImage = true }: ImageUploadProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +33,7 @@ export default function ImageUpload() {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4 pt-16">
+    <div className="flex flex-col items-center space-y-4">
       {/* 上传按钮 */}
       <label
         className="flex items-center space-x-2 border-2 border-[#5B70F8] rounded-full px-8 py-1 cursor-pointer hover:bg-blue-50 transition"
@@ -53,18 +57,22 @@ export default function ImageUpload() {
       </div>
 
       {/* 默认图片选择 */}
-      <p className="text-sm text-[#999999] text-400">No image? Try one of these:</p>
-      <div className="flex space-x-2">
-        {defaultImages.map((src, idx) => (
-          <img
-            key={idx}
-            src={src}
-            alt="default"
-            className="w-20 h-20 object-cover rounded-sm border-2 border-gray-200 hover:border-blue-500 cursor-pointer"
-            onClick={() => alert(`You selected image: ${src}`)}
-          />
-        ))}
-      </div>
+      {showSampleImage && (
+        <>
+          <p className="text-sm text-[#999999] text-400">No image? Try one of these:</p>
+          <div className="flex space-x-2">
+            {defaultImages.map((src, idx) => (
+              <img
+                key={idx}
+                src={src}
+                alt="default"
+                className="w-20 h-20 object-cover rounded-sm border-2 border-gray-200 hover:border-blue-500 cursor-pointer"
+                onClick={() => alert(`You selected image: ${src}`)}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

@@ -1,11 +1,11 @@
 const headerNavLinks = [
-  { href: '/blog', title: 'Video Watermark' },
-  { href: '/tags', title: 'Tiktok Watermark' },
-  { href: '/video', title: 'Pricing' },
-  { href: '/projects', title: 'API' },
-  { href: '/about', title: 'Blog' },
+  { href: '/remove', title: 'Image' },
+  { href: '/batch_remove', title: 'Batch Remove' },
+  { href: '/video_remove', title: 'Video' },
+  { href: '/pricing', title: 'Pricing' },
+  { href: '/blog', title: 'Blog' },
 ]
 
-export const fixedPages = ["/", "/upload"];
+export const fixedPages = ["/", "/remove"];
 
 export default headerNavLinks
