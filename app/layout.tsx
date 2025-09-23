@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ClientComponent from "@/components/common/ClientComponent";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,6 +25,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
@@ -32,6 +34,7 @@ export default function RootLayout({
         <Header />
         <main className="mb-auto">{children}</main>
         <Footer />
+        <ClientComponent />
       </body>
     </html>
   );

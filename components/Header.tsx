@@ -4,17 +4,16 @@ import { usePathname } from "next/navigation";
 import cx from 'classnames';
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks, { fixedPages } from '@/data/headerNavLinks'
-import Logo from './Logo'
-import Link from './common/Link'
-import MobileNav from './MobileNav'
-import UserState from './UserState'
-import SectionContainer from "./common/SectionContainer";
+import Logo from '@/components/Logo'
+import Link from '@/components/common/Link'
+import MobileNav from '@/components/MobileNav'
+import UserState from '@/components/UserState'
+import SectionContainer from "@/components/common/SectionContainer";
 
 const Header = () => {
   const headerRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,7 +27,6 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [headerRef]);
-
 
   let headerClass = 'w-full pt-4'
   if (siteMetadata.stickyNav || fixedPages.includes(pathname)) {
