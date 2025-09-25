@@ -8,37 +8,72 @@ const reviews = [
     rating: 5,
     title: "Perfect for My Online shop",
     content:
-      "This tool helps me clean up product images for my ecommerce store.Saves me so much time",
+      "This tool helps me clean up product images for my e-commerce store. Saves me so much time! My listings look so much more professional now.",
     avatar: "https://picsum.photos/80/80", // 替换为实际头像路径
-    name: "Lucas M.",
+    name: "Emily R.",
     location: "Canada",
   },
   {
     rating: 5,
-    title: "Quick and Easy!",
+    title: "So Quick and Easy!",
     content:
-      "I removed a huge logo from my travel photo in just afew seconds. The result looks so natural!",
+      "Just upload, click remove, and it's done. Took less than 10 seconds for my photo. I didn’t even need any editing skills.",
     avatar: "https://picsum.photos/80/80",
-    name: "Lucas M.",
-    location: "Canada",
+    name: "Jason L.",
+    location: "USA",
   },
   {
     rating: 5,
-    title: "No Quality Loss at All",
-    content:
-      "I was worried the image would look blurry, but the AIkept everything crystal clear. Amazing!",
+    title: "Saved My Travel Photos",
+    content: "I thought my vacation pictures were ruined by big logos, but this tool cleaned them up perfectly. Now I can finally share them on social media.",
     avatar: "https://picsum.photos/80/80",
-    name: "Sophie L.",
+    name: "Sarah W.",
     location: "UK",
   },
   {
     rating: 5,
-    title: "Better Than Expected",
+    title: "High Quality Results",
     content:
-      "I was worried about the outcome, but it exceeded my expectations. Super happy with the result!",
+      "Didn’t expect the photo to stay this sharp. No blur, no pixelation—looks original. It's like the watermark was never there.",
     avatar: "https://picsum.photos/80/80",
-    name: "Emma T.",
+    name: "Daniel K.",
     location: "USA",
+  },
+  {
+    rating: 5,
+    title: "No Downloads Needed",
+    content:
+      "Love that it works straight in the browser. Super convenient and supports all my file types. I can use it anywhere, even on my laptop at work.",
+    avatar: "https://picsum.photos/80/80",
+    name: "Monica T.",
+    location: "Australia",
+  },
+  {
+    rating: 5,
+    title: "Safe and Secure",
+    content:
+      "I was worried about privacy, but knowing files auto-delete makes me feel comfortable using it. I can upload personal photos without stress.",
+    avatar: "https://picsum.photos/80/80",
+    name: "Alex G.",
+    location: "USA",
+  },
+  {
+    rating: 5,
+    title: "Great for Business Use",
+    content:
+      "I use it for product shots on my online store. Looks professional and saves me hours of editing. My customers can focus on the products, not the watermarks.",
+    avatar: "https://picsum.photos/80/80",
+    name: "Kevin M.",
+    location: "USA",
+  },
+  {
+    rating: 5,
+    title: "Instant Watermark Removal",
+    content:
+      "This is the fastest tool I’ve tried. Watermarks gone in seconds with zero quality loss. Honestly feels like magic every time I use it.",
+    avatar: "https://picsum.photos/80/80",
+    name: "Laura P.",
+    location: "Canada",
   },
 ];
 

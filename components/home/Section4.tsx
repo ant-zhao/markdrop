@@ -43,23 +43,23 @@ const faqData = [
   },
   {
     question: 'Does the tool reduce the image quality after removing the watermark?',
-    answer: '通常不会哦，我们的工具采用先进算法，在移除水印时会尽可能保持图像原本的质量，让你既能去掉水印，又能拥有清晰的画面。',
+    answer: 'No. Our AI technology ensures lossless quality preservation. Your images remain sharp, clear, and in their original resolution without any pixelation or blurriness.',
   },
   {
     question: 'What image formats are supported?',
-    answer: '我们支持多种常见图像格式，像 JPG、PNG、WEBP 等都不在话下，满足你不同的图像格式需求，方便你上传各种类型的图片来进行水印移除操作。',
+    answer: 'We support a wide range of formats, including JPG, PNG, BMP, GIF, and more. You can upload almost any common image type, and the watermark will be removed instantly.',
   },
   {
     question: 'Do I need to install any software?',
-    answer: '不需要安装任何软件哦，这是一款在线工具，你只要有网络，通过浏览器访问我们的网站，就能直接使用水印移除功能，简单又方便。',
+    answer: 'Not at all. Our tool is 100% online—no downloads or installations required. Simply upload your photo, click remove, and download the clean image directly from your browser.',
   },
   {
     question: 'How long does it take to remove a watermark?',
-    answer: '移除水印的时间取决于图像的大小和复杂度，一般来说，简单的水印几秒到十几秒就能搞定，复杂一些的可能需要几十秒，但整体都能快速完成，不会让你等待太久。',
+    answer: 'It’s instant. Once you upload your photo, our AI automatically detects and removes the watermark in just a few seconds.',
   },
   {
     question: 'Is my uploaded image safe and private?',
-    answer: '你的上传图片是安全且私密的，我们会采取严格的安全措施，确保你的图片不会被泄露或非法使用，处理完成后，相关数据也会在一定时间后清除，保护你的隐私。',
+    answer: 'Absolutely. Your images are processed securely, and we do not store or share any files. All uploads are automatically deleted after processing to guarantee your privacy.',
   },
 ];
 

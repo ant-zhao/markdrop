@@ -28,7 +28,7 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [headerRef]);
 
-  let headerClass = 'w-full pt-4'
+  let headerClass = 'w-full pt-2'
   if (siteMetadata.stickyNav || fixedPages.includes(pathname)) {
     headerClass += ' top-0 left-0 z-50'
   }
@@ -41,8 +41,9 @@ const Header = () => {
       <SectionContainer>
         <div
           ref={headerRef}
-          className={cx('flex items-center w-full justify-between sm:px-4 sm:rounded-[32px] py-2 gap-4', {
-            'bg-white/60 backdrop-blur-md shadow-md': scrolled,
+          className={cx('flex items-center mx-auto flex-nowrap justify-between sm:rounded-[32px] py-2 gap-4 transition-[width,margin,padding] duration-500', {
+            'bg-white/60 backdrop-blur-md shadow-md gap-12 py-3 w-max px-6': scrolled,
+            'w-full sm:px-4': !scrolled
           })}
         >
           <Link href="/" aria-label={siteMetadata.headerTitle} className='flex-shrink-0'>

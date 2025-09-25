@@ -7,28 +7,28 @@ import { useState } from "react"
 const cases = [
   {
     label: 'People',
-    left: "https://picsum.photos/80/80",
-    right: "https://placebear.com/80/80"
+    left: require("@/assets/image/sample/people-watermark.webp"),
+    right: require("@/assets/image/sample/people-watermark-remover.webp")
   },
   {
     label: 'Product',
-    left: "https://picsum.photos/80/80",
-    right: "https://placebear.com/80/80"
+    left: require("@/assets/image/sample/products-watermark.webp"),
+    right: require("@/assets/image/sample/products-watermark-remover.webp")
   },
   {
     label: 'Travel',
-    left: "https://picsum.photos/80/80",
-    right: "https://placebear.com/80/80"
+    left: require("@/assets/image/sample/travel-watermark.webp"),
+    right: require("@/assets/image/sample/travel-watermark-remover.webp")
   },
   {
     label: 'Logo',
-    left: "https://picsum.photos/80/80",
-    right: "https://placebear.com/80/80"
+    left: require("@/assets/image/sample/logo-watermark.jpg"),
+    right: require("@/assets/image/sample/logo-watermark-remover.webp")
   },
   {
-    label: 'Meme',
-    left: "https://picsum.photos/80/80",
-    right: "https://placebear.com/80/80"
+    label: 'Emoji',
+    left: require("@/assets/image/sample/emoji-watermark.webp"),
+    right: require("@/assets/image/sample/emoji-watermark-remover.webp")
   }
 ]
 

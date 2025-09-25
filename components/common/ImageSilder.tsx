@@ -1,4 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
+import SliderButton from '@/assets/icon/SliderButton';
 
 const ImageSlider = ({ left, right, largeLine }: {
   left: string,
@@ -9,8 +11,14 @@ const ImageSlider = ({ left, right, largeLine }: {
   const sliderRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
 
+  useEffect(() => {
+    setPosition(50);
+  }, [left]);
+
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!sliderRef.current) return;
     draggingRef.current = true;
+    handleMouseMove(e.nativeEvent);
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
   };
@@ -37,32 +45,47 @@ const ImageSlider = ({ left, right, largeLine }: {
       style={{
         paddingTop: '58%'
       }}
+      onMouseDown={handleMouseDown}
     >
-      <div className="absolute inset-0 select-none pointer-events-none w-full h-full rounded-sm overflow-hidden">
-        <div className="w-full h-full">
-          <img src={right} alt="Image 1" className="object-cover w-full h-full" />
+      <div
+        className="absolute inset-0 select-none w-full h-full rounded-sm overflow-hidden cursor-pointer"
+      >
+        <div className="w-full h-full pointer-events-none">
+          <Image
+            src={right}
+            fill
+            alt="Image 1"
+            className="object-cover w-full h-full"
+          />
         </div>
         <div
-          className="absolute w-full h-full left-0 top-0"
+          className="absolute w-full h-full left-0 top-0 pointer-events-none"
           style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
         >
-          <img src={left} alt="Image 2" className="object-cover w-full h-full" />
+          <Image
+            src={left}
+            fill
+            alt="Image 2"
+            className="object-cover w-full h-full"
+          />
         </div>
       </div>
       <div
-        className="absolute top-0 left-0 cursor-pointer"
+        className="absolute w-[1rem] top-0 left-0 cursor-pointer"
         style={{
-          left: `${position}%`,
-          width: '1px',
+          left: `calc(${position}% - 0.5rem)`,
           height: '100%',
-          backgroundColor: '#5B70F8',
           ...largeLine && {
             height: 'calc(100% + 40px)',
             transform: 'translateY(-20px)',
           },
         }}
-        onMouseDown={handleMouseDown}
-      />
+      >
+        <div className="w-[2px] h-full bg-[#5B70F8] absolute top-0 left-[50%] transform -translate-x-1/2"></div>
+        <div className='absolute top-[50%] left-[50%] transform -translate-x-1/2 -translate-y-1/2 rounded-[50%] shadow-gray-950 shadow-2xl'>
+          <SliderButton />
+        </div>
+      </div>
     </div>
   );
 };
