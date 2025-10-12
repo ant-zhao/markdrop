@@ -1,6 +1,4 @@
 // components/Footer.tsx
-"use client";
-
 import { Fragment } from "react";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { FaFacebookF, FaInstagram, FaYoutube, FaPinterestP, FaTiktok } from "react-icons/fa";

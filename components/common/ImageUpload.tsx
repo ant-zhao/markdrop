@@ -1,3 +1,5 @@
+"use client";
+
 import HomeIcon2 from "@/assets/icon/HomeIcon2";
 import { useState, DragEvent } from "react";
 

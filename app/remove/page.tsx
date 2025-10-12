@@ -1,5 +1,3 @@
-"use client";
-
 import Section1 from "@/components/remove/Section1";
 import Section4 from "@/components/home/Section4";
 

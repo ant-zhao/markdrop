@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -20,18 +21,24 @@ export const metadata: Metadata = {
   description: "An AI watermark removal tool",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
+  params2,
 }: Readonly<{
   children: React.ReactNode;
+  params: { pathname?: string, slug?: string };
+  params2: { pathname?: string, slug?: string };
 }>) {
+  const h = await headers();
+  const pathname = new URL(h.get("x-invoke-path") || h.get("referer") || "/", "http://example.com").pathname;
 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
+        <Header pathname={pathname} />
         <main className="mb-auto">{children}</main>
         <Footer />
         <ClientComponent />

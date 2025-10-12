@@ -1,12 +1,9 @@
-import { useState } from "react"
 import SectionContainer from "../common/SectionContainer"
 import ImageUpload from "@/components/common/ImageUpload"
 import ImageSilder from "@/components/common/ImageSilder"
 import CustomLink from "@/components/common/Link"
 
 const Section1 = () => {
-  const [caseIndex, setCaseIndex] = useState(0)
-
   return (
     <section className="pt-28 w-full bg-gradient-to-bl from-[#FFF6F2] via-[#FFF9EF] to-[#F0FFFD]">
       <SectionContainer>

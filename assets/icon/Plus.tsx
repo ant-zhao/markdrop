@@ -1,6 +1,6 @@
 
 type Props = React.SVGProps<SVGSVGElement> & {
-  isOpen: boolean;
+  isOpen?: boolean;
 }
 
 export default function ArrowBottom({ isOpen, ...props }: Props) {
