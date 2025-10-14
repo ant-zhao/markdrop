@@ -7,8 +7,10 @@ import Link from '@/components/common/Link'
 import MobileNav from '@/components/MobileNav'
 import UserState from '@/components/UserState'
 import SectionContainer from "@/components/common/SectionContainer";
+import { getPathname } from "@/utils";
 
-export default function Header({ pathname }: { pathname: string }) {
+export default async function Header() {
+  const pathname = await getPathname();
   const isSticky = siteMetadata.stickyNav || fixedPages.includes(pathname);
   const isFixed = fixedPages.includes(pathname);
 

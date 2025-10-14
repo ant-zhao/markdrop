@@ -1,5 +1,7 @@
+import path from "path";
 import type { NextConfig } from "next";
 import withBundleAnalyzer from '@next/bundle-analyzer'
+import TerserPlugin from "terser-webpack-plugin";
 
 // 如果您使用的是外部服务，则可能需要在script-src中插入其他域
 const ContentSecurityPolicy = `
@@ -81,7 +83,7 @@ const nextConfig: NextConfig = {
       },
     ]
   },
-  webpack: (config) => {
+  webpack: (config, { isServer, dev }) => {
     config.module.rules.push({
       test: /\.(png|jpe?g|gif|mp4|mp3)$/i,
       use: [
@@ -99,6 +101,29 @@ const nextConfig: NextConfig = {
       test: /\.svg$/,
       use: ['@svgr/webpack'],
     })
+
+    if (!isServer) {
+      // ✅ 额外增加自定义 entry
+      
+    }
+
+    // ✅ 开启混淆压缩（生产环境）
+    if (!dev) {
+      config.optimization.minimize = true;
+      config.optimization.minimizer = [
+        new TerserPlugin({
+          terserOptions: {
+            compress: true,
+            mangle: true,
+            format: {
+              comments: false,
+            },
+          },
+          extractComments: false,
+        }),
+      ];
+    }
+
     return config
   },
 };

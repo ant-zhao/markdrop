@@ -31,6 +31,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "file-loader": "^6.2.0",
+    "terser-webpack-plugin": "^5.3.14",
     "typescript": "^5"
   }
 }
