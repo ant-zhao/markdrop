@@ -2,23 +2,19 @@
 'use client'
 
 import { Button } from '@headlessui/react';
-import { useConfigurationStore } from "@/stores/useConfig";
+// import { useConfigurationStore } from "@/stores/useConfig";
+import Link from 'next/link';
 
 const UserState = () => {
-  const { setLoginVisible } = useConfigurationStore();
-
-  const openLoginModal = () => {
-    setLoginVisible(true);
-  };
-
   return (
     <div className='flex-shrink-0 items-center gap-x-4 hidden sm:flex'>
-      <Button
-        className="text-white bg-[#5B70F8] px-4 h-[32px] rounded-[16px]"
-        onClick={openLoginModal}
-      >
-        Login
-      </Button>
+      <Link href="/auth/login">
+        <Button
+          className="text-white bg-[#5B70F8] px-4 h-[32px] rounded-[16px] cursor-pointer"
+        >
+          Login
+        </Button>
+      </Link>
     </div>
   )
 }

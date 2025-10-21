@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import ClientComponent from "@/components/common/ClientComponent";
 import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "Mark Drop",
+  description: "An AI watermark removal tool",
+};
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,30 +17,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Mark Drop",
-  description: "An AI watermark removal tool",
-};
-
 export default async function RootLayout({
   children,
-  params,
-  params2,
 }: Readonly<{
   children: React.ReactNode;
-  params: { pathname?: string, slug?: string };
-  params2: { pathname?: string, slug?: string };
 }>) {
 
   return (
     <html lang="en" className="scroll-smooth">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Header />
-        <main className="mb-auto">{children}</main>
-        <Footer />
-        <ClientComponent />
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {children}
       </body>
     </html>
   );

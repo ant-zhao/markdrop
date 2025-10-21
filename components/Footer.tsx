@@ -81,7 +81,8 @@ export default function Footer() {
                 <span className="pr-2">English</span>
                 <IoIosArrowDown />
               </MenuButton>
-              <MenuItems anchor="top" modal={false} className="absolute mt-2 bg-white text-black rounded shadow">
+              {/* TODO: */}
+              {/* <MenuItems anchor="top" modal={false} className="absolute mt-2 bg-white text-black rounded shadow">
                 <MenuItem as={Fragment}>
                   {({ active }) => (
                     <button className={`block px-4 py-2 ${active && "bg-gray-100"}`}>
@@ -96,7 +97,7 @@ export default function Footer() {
                     </button>
                   )}
                 </MenuItem>
-              </MenuItems>
+              </MenuItems> */}
             </Menu>
 
             <Menu as="div" className="relative">
@@ -104,7 +105,7 @@ export default function Footer() {
                 <span className="pr-2">China (CNY ¥)</span>
                 <IoIosArrowDown />
               </MenuButton>
-              <MenuItems anchor="top" modal={false} className="absolute mt-2 bg-white text-black rounded shadow">
+              {/* <MenuItems anchor="top" modal={false} className="absolute mt-2 bg-white text-black rounded shadow">
                 <MenuItem as={Fragment}>
                   {({ active }) => (
                     <button className={`block px-4 py-2 ${active && "bg-gray-100"}`}>
@@ -119,7 +120,7 @@ export default function Footer() {
                     </button>
                   )}
                 </MenuItem>
-              </MenuItems>
+              </MenuItems> */}
             </Menu>
           </div>
 
