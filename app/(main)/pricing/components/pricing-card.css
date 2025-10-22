@@ -1,0 +1,12 @@
+.pricing-plan-item .plan-type-annually,
+.pricing-plan-item .plan-type-monthly {
+  display: none;
+}
+
+.pricing-plan-item.has-annually .plan-type-annually {
+  display: block;
+}
+
+.pricing-plan-item.has-monthly .plan-type-monthly {
+  display: block;
+}

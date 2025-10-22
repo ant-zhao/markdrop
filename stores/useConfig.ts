@@ -12,7 +12,10 @@ interface ConfigurationState {
 }
 
 export const useConfigurationStore = create<ConfigurationState>((set) => ({
-  configuration: { loginVisible: false, theme: 'light' },
+  configuration: {
+    loginVisible: false,
+    theme: 'light',
+  },
   setLoginVisible: (loginVisible) => set((state) => ({
     configuration: {
       ...state.configuration,

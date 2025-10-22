@@ -6,6 +6,6 @@ const headerNavLinks = [
   { href: '/blog', title: 'Blog' },
 ]
 
-export const fixedPages = ["/", "/remove", "/privacy-policy", "/terms-service"];
+export const fixedPages = ["/", "/remove", "/privacy-policy", "/terms-service", '/pricing'];
 
 export default headerNavLinks

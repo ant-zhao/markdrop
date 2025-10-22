@@ -1,4 +1,3 @@
-import Script from 'next/script';
 import cx from 'classnames';
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks, { fixedPages } from '@/data/headerNavLinks'
@@ -8,6 +7,7 @@ import MobileNav from '@/components/MobileNav'
 import UserState from '@/components/UserState'
 import SectionContainer from "@/components/common/SectionContainer";
 import { getPathname } from "@/utils";
+import HeaderScript from './HeaderScript';
 
 export default async function Header() {
   const pathname = await getPathname();
@@ -60,33 +60,7 @@ export default async function Header() {
           <MobileNav />
         </div>
       </SectionContainer>
-
-      {/* 内联脚本控制滚动效果 */}
-      <Script id="header-scroll" strategy="afterInteractive">
-        {`
-          (function() {
-            const header = document.getElementById('header-inner');
-            if (!header) return;
-
-            const scrolledClass = 'bg-white/60 backdrop-blur-md shadow-md gap-12 py-3 w-max px-6';
-            const defaultClass = 'w-full sm:px-4';
-            const threshold = header.clientHeight || 112;
-
-            const onScroll = () => {
-              if (window.scrollY > threshold) {
-                header.classList.add(...scrolledClass.split(' '));
-                header.classList.remove(...defaultClass.split(' '));
-              } else {
-                header.classList.remove(...scrolledClass.split(' '));
-                header.classList.add(...defaultClass.split(' '));
-              }
-            };
-
-            window.addEventListener('scroll', onScroll);
-            onScroll(); // 初始化
-          })();
-        `}
-      </Script>
+      <HeaderScript />
     </header>
   );
 }

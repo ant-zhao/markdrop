@@ -10,7 +10,7 @@ const UserState = () => {
     <div className='flex-shrink-0 items-center gap-x-4 hidden sm:flex'>
       <Link href="/auth/login">
         <Button
-          className="text-white bg-[#5B70F8] px-4 h-[32px] rounded-[16px] cursor-pointer"
+          className="text-white bg-[#314af0]/80 hover:bg-[#314af0] px-4 h-[32px] rounded-[16px] cursor-pointer"
         >
           Login
         </Button>
