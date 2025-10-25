@@ -2,6 +2,7 @@ import SectionContainer from "@/components/common/SectionContainer";
 import PricingCard from "./components/pricing-card";
 import PricingScript from "./components/pricing-script";
 import PricingSwitch from "./components/pricing-switch";
+import Header from "@/components/Header";
 
 export default async function Page() {
   const plans = [
@@ -75,6 +76,7 @@ export default async function Page() {
 
   return (
     <section className="min-h-screen pt-28 pb-20 bg-gradient-to-bl from-[#FFF6F2] via-[#FFF9EF] to-[#F0FFFD]">
+      <Header pathname="/pricing" />
       <SectionContainer>
         <div className="w-full">
           <div className="text-center">

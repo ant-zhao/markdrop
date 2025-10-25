@@ -9,7 +9,6 @@ export default async function RootLayout({
 }>) {
   return (
     <>
-      <Header />
       <main className="mb-auto">{children}</main>
       <Footer />
       <ClientComponent />

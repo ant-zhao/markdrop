@@ -1,5 +1,6 @@
 // src/app/privacy-policy/page.tsx
 import Agreement, { Section } from "@/components/common/Agreement";
+import Header from "@/components/Header";
 
 
 const privacyPolicy: Section[] = [
@@ -160,6 +161,7 @@ export default function PrivacyPolicyPage() {
 
   return (
     <div className="font-sans min-h-screen pb-12 w-full">
+      <Header pathname="/privacy-policy" />
       <section className="pt-28 pb-8 w-full bg-gradient-to-b from-[#FFF6F2] to-[#FFFFFF]">
         <div className="text-center">
           <h1 className="text-2xl font-bold">Privacy policy</h1>

@@ -5,7 +5,7 @@ import CustomLink from "@/components/common/Link"
 
 const Section1 = () => {
   return (
-    <section className="pt-28 w-full bg-gradient-to-bl from-[#FFF6F2] via-[#FFF9EF] to-[#F0FFFD]">
+    <section className="pt-28 h-[100vh] flex flex-col items-center justify-center w-full bg-gradient-to-bl from-[#FFF6F2] via-[#FFF9EF] to-[#F0FFFD]">
       <SectionContainer>
         <div className="w-full overflow-hidden text-center min-h-[300px] 2xl:min-h-[400px]">
           <p className="text-sm text-[#000000] py-4">
