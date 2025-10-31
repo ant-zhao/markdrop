@@ -6,13 +6,13 @@ import TerserPlugin from "terser-webpack-plugin";
 // 如果您使用的是外部服务，则可能需要在script-src中插入其他域
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app www.googletagmanager.com;
-  style-src 'self' 'unsafe-inline';
-  img-src * blob: data:;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' https://accounts.google.com giscus.app www.googletagmanager.com;
+  style-src 'self' 'unsafe-inline' https://accounts.google.com;
+  img-src * blob: data: https://lh3.googleusercontent.com;
   media-src 'self' *.s3.amazonaws.com;
   connect-src *;
-  font-src 'self';
-  frame-src giscus.app
+  font-src *;
+  frame-src giscus.app https://accounts.google.com
 `
 
 const securityHeaders = [

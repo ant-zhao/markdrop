@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import LayoutClientComponent from "@/components/common/LayoutCLientComponent";
 
 export const metadata: Metadata = {
   title: "Mark Drop",
@@ -24,9 +25,10 @@ export default async function RootLayout({
 }>) {
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" data-scroll-behavior="smooth">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <LayoutClientComponent />
       </body>
     </html>
   );

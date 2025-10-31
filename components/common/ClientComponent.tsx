@@ -1,19 +1,23 @@
 "use client";
 
-import LoginModal from "@/components/common/LoginModal";
-import { useConfigurationStore } from "@/stores/useConfig";
 import { useEffect } from "react";
+import { useUserStore } from "@/stores/useUser";
+import GoogleLoginPop from "@/components/common/GoogleLoginPop";
 
 export default function ClientComponent() {
-  const { configuration, setLoginVisible } = useConfigurationStore();
+  const { userMode } = useUserStore();
 
-  const closeLoginModal = () => {
-    setLoginVisible(false);
-  };
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = () => {
+
+  }
 
   return (
     <>
-      {configuration.loginVisible && <LoginModal onClose={closeLoginModal} />}
+      <GoogleLoginPop mode={userMode} />
     </>
   );
 }

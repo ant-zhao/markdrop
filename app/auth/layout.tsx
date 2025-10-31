@@ -1,5 +1,3 @@
-"use client";
-
 import Header from "@/components/Header";
 import SideBanner from "./components/SideBanner";
 import "./index.scss";
@@ -11,7 +9,7 @@ export default function AuthLayout({
 }) {
   return (
     <>
-      <Header pathname="/auth" />
+      {/* <Header pathname="/auth" /> */}
       <div className="bg-[#f0f0f0] h-screen overflow-hidden flex text-gray-900">
         <SideBanner />
         {children}

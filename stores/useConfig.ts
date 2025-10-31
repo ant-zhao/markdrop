@@ -7,11 +7,14 @@ export type Configuration = {
 }
 
 interface ConfigurationState {
+  googleLoaded: boolean;
   configuration: Configuration;
   setLoginVisible: (loginVisible: boolean) => void;
+  setGoogleLoaded: (googleLoaded: boolean) => void;
 }
 
 export const useConfigurationStore = create<ConfigurationState>((set) => ({
+  googleLoaded: false,
   configuration: {
     loginVisible: false,
     theme: 'light',
@@ -22,4 +25,5 @@ export const useConfigurationStore = create<ConfigurationState>((set) => ({
       loginVisible,
     },
   })),
+  setGoogleLoaded: (googleLoaded) => set({ googleLoaded }),
 }));
