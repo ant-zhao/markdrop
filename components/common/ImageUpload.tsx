@@ -1,7 +1,8 @@
 "use client";
 
+import { DragEvent } from "react";
+import { useMaskStore } from "@/stores/useMaskStore";
 import HomeIcon2 from "@/assets/icon/HomeIcon2";
-import { useState, DragEvent } from "react";
 
 const defaultImages = [
   "https://picsum.photos/80/80",
@@ -15,18 +16,18 @@ type ImageUploadProps = {
 };
 
 export default function ImageUpload({ showSampleImage = true }: ImageUploadProps) {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const { image, setImage } = useMaskStore();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
-      setSelectedFile(e.target.files[0]);
+      setImage(e.target.files[0]);
     }
   };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (e.dataTransfer.files[0]) {
-      setSelectedFile(e.dataTransfer.files[0]);
+      setImage(e.dataTransfer.files[0]);
     }
   };
 
@@ -46,17 +47,15 @@ export default function ImageUpload({ showSampleImage = true }: ImageUploadProps
       </label>
 
       {/* 拖拽区域 */}
-      <div
-        className="w-full max-w-md border-2 border-dashed border-gray-300 rounded-lg p-6 text-center text-[#666666] text-500"
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-      >
-        {selectedFile ? (
-          <p>{selectedFile.name}</p>
-        ) : (
+      {!image && (
+        <div
+          className="w-full max-w-md border-2 border-dashed border-gray-300 rounded-lg p-6 text-center text-[#666666] text-500"
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+        >
           <p>Or simply drag & drop your image here</p>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* 默认图片选择 */}
       {showSampleImage && (

@@ -1,6 +1,7 @@
+import Header from "@/components/Header";
 import Section1 from "@/components/remove/Section1";
 import Section4 from "@/components/home/Section4";
-import Header from "@/components/Header";
+import MaskEditorDialog from "@/components/common/MaskEditorDialog";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         <Section1 />
         <Section4 />
       </main>
+      <MaskEditorDialog />
     </div>
   );
 }

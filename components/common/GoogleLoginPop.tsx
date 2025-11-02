@@ -22,6 +22,10 @@ export default function GoogleLoginPop({ mode }: Props) {
   }, []);
 
   const initGoogleLogin = () => {
+    const lastPopTime = localStorage.getItem('last_pop_time');
+    if (lastPopTime && Date.now() - parseInt(lastPopTime) < 1000 * 60 * 60 * 24) {
+      return;
+    }
     if (!(mode !== USER_MODE.LOGGED_IN && googleLoaded) || renderedRef.current) {
       return;
     }
@@ -32,6 +36,7 @@ export default function GoogleLoginPop({ mode }: Props) {
       callback: handleCredentialResponse,
     });
     window.google.accounts.id.prompt(); // 显示浮窗
+    localStorage.setItem('last_pop_time', Date.now().toString());
   }
 
   return null;
