@@ -126,6 +126,15 @@ const nextConfig: NextConfig = {
 
     return config
   },
+
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/mark_drop/:path*', // 本地请求路径（前端发起请求的路径）
+  //       destination: 'https://11zf583709up0.vicp.fun/mark_drop/:path*', // 目标代理服务器地址
+  //     },
+  //   ];
+  // },
 };
 
 export default withBundleAnalyzer({

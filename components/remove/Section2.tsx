@@ -12,7 +12,7 @@ const Section2 = () => {
   }
 
   return (
-    <div className="w-2xl xl:w-3xl overflow-hidden text-center flex flex-col items-center select-none pt-4">
+    <div className="w-2xl xl:w-3xl bg-white mt-4 mb-8 px-24 pb-8 rounded-sm overflow-hidden text-center flex flex-col items-center select-none">
       <div className="w-max bg-gray-100 flex rounded-sm p-1">
         {Object.values(RemoveType).map((type) => (
           <div
@@ -27,7 +27,7 @@ const Section2 = () => {
           </div>
         ))}
       </div>
-      <div className="w-full p-2 my-8 border-primary-300 rounded-sm border-dashed border mt-2">
+      <div className="w-full p-2 mt-2 mb-8 border-primary-300 rounded-sm border-dashed border">
         <ImageSilder left={imageUrl} />
       </div>
     </div>

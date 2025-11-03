@@ -1,17 +1,26 @@
 // stores/userStore.ts
 import { create } from "zustand";
 import { USER_MODE } from "@/types/user";
-import { post } from "@/lib/request";
+import { loginApi } from "@/lib/api";
+import { toast } from "sonner";
+import { hashSHA256 } from "@/utils";
+import { SUCCESS_CODE } from "@/utils/constants";
 
 export type User = {
   id: string;
+  googleId: string;
   name: string;
+  email: string;
+  avatarUrl: string;
+  pointBalance: number;
 } | null;
 
 interface UserState {
+  accessToken: string;
   userMode: USER_MODE;
   userInfo: User;
-  setUser: (id: string, name: string) => void;
+  setAccessToken: (accessToken: string) => void;
+  setUser: (user: User) => void;
   setUserMode: (mode: USER_MODE) => void;
   clearUser: () => void;
   handleCredentialResponse: (response: google.accounts.id.CredentialResponse) => Promise<any>;
@@ -19,23 +28,25 @@ interface UserState {
 
 const handleCredentialResponse = async (response: google.accounts.id.CredentialResponse, set: (state: Partial<UserState>) => void) => {
   const idToken = response.credential; // <-- 这里就是 Google 的 id_token
-  // 调用你后端接口
-  const res = await post('/user/v1/login', {
-    idToken,
-  });
+  const res = await loginApi({ idToken });
 
-  if (res.data.code === 200) {
-    set({ userMode: USER_MODE.LOGGED_IN, userInfo: res.data.data });
+  if (res.code !== SUCCESS_CODE) {
+    toast.error(res.message);
+    return;
   }
 
-  return res.data;
+  const { accessToken } = res.data;
+  localStorage.setItem(hashSHA256('accessToken'), accessToken);
+  set({ accessToken });
 }
 
 export const useUserStore = create<UserState>((set) => ({
+  accessToken: "",
   userMode: USER_MODE.UNKNOWN,
   userInfo: null,
+  setAccessToken: (accessToken: string) => set({ accessToken }),
   setUserMode: (mode) => set({ userMode: mode }),
-  setUser: (id, name) => set({ userInfo: { id, name } }),
+  setUser: (user: User) => set({ userInfo: user }),
   clearUser: () => set({ userInfo: null, userMode: USER_MODE.LOGOUT }),
   handleCredentialResponse: (response: google.accounts.id.CredentialResponse) => {
     return handleCredentialResponse(response, set);

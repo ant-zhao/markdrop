@@ -6,12 +6,13 @@ import axios, {
   AxiosError,
   InternalAxiosRequestConfig,
 } from "axios";
+import { hashSHA256 } from "@/utils";
 
 /**
  * 创建 axios 实例
  */
 const request: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "/api", // 支持环境变量配置
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL, // 支持环境变量配置
   timeout: 15000,
   headers: {
     "Content-Type": "application/json",
@@ -24,7 +25,7 @@ const request: AxiosInstance = axios.create({
 request.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // 可在这里统一附加 token
-    const token = typeof window !== "undefined" ? localStorage.getItem("Authorization") : null;
+    const token = typeof window !== "undefined" ? localStorage.getItem(hashSHA256('accessToken')) : null;
     if (token && config.headers) {
       config.headers.Token = token;
       // 统一处理额外请求头
@@ -43,15 +44,15 @@ request.interceptors.request.use(
  */
 request.interceptors.response.use(
   (response: AxiosResponse) => {
-    // 后端返回 { code, data, message } 时可在这里统一解析
-    const { data } = response;
-
-    if (data?.code && data.code !== 200) {
+    const { data, status } = response;
+    
+    if (status !== 200) {
       console.error(`[API Error] ${data.message}`);
       return Promise.reject(data);
     }
-
-    return data?.data ?? data;
+    
+    // 后端返回 { code, data, message } 时可在这里统一解析
+    return data;
   },
   (error: AxiosError) => {
     if (error.response) {
@@ -60,7 +61,7 @@ request.interceptors.response.use(
         case 401:
           console.warn("No Authorization");
           if (typeof window !== "undefined") {
-            localStorage.removeItem("Authorization");
+            localStorage.removeItem(hashSHA256('accessToken'));
           }
           break;
         case 403:
@@ -89,15 +90,15 @@ type ResponseData<T> = {
  * 简化的请求方法封装
  */
 export const get = <T = any>(url: string, params?: any, config?: AxiosRequestConfig) =>
-  request.get<ResponseData<T>>(url, { params, ...config });
+  request.get(url, { params, ...config }) as Promise<ResponseData<T>>;
 
-export const post = <T = any>(url: string, data?: any, config?: AxiosRequestConfig) =>
-  request.post<ResponseData<T>>(url, data, config);
+export const post = <T = any>(url: string, data?: any, config?: AxiosRequestConfig) => 
+  request.post(url, data, config) as Promise<ResponseData<T>>;
 
 export const put = <T = any>(url: string, data?: any, config?: AxiosRequestConfig) =>
-  request.put<ResponseData<T>>(url, data, config);
+  request.put(url, data, config) as Promise<ResponseData<T>>;
 
 export const del = <T = any>(url: string, config?: AxiosRequestConfig) =>
-  request.delete<ResponseData<T>>(url, config);
+  request.delete(url, config) as Promise<ResponseData<T>>;
 
 export default request;
