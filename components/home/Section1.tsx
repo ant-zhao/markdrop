@@ -67,7 +67,7 @@ export default function Section1() {
           </p>
 
           <div className="w-full pt-16">
-            <ImageUpload />
+            <ImageUpload goRemove={true} />
           </div>
 
           <h2 className="text-3xl font-bold pt-24">

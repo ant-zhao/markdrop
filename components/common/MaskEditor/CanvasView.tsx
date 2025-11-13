@@ -1,56 +1,67 @@
 import { useEffect, useRef } from "react";
-import { useCanvasRenderer } from "./useCanvasRenderer";
+import { CanvasRenderer } from "./canvasRenderer";
 import { useMaskStore } from "@/stores/useMaskStore";
 import { Graphics, FederatedPointerEvent } from "pixi.js";
 import { ToolManager } from "./tools/ToolManager";
 import { ToolType } from "./tools/interface";
 
 interface CanvasViewProps {
-  imageUrl: string | null;
+  image: File | null;
   activeTool: ToolType;
 }
 
-export default function CanvasView({ imageUrl, activeTool }: CanvasViewProps) {
+const CanvasView = ({ image, activeTool }: CanvasViewProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const appRef = useCanvasRenderer(containerRef, imageUrl);
+  const canvasRender = useRef<CanvasRenderer>(null);
   const { showMask } = useMaskStore();
   const maskLayer = useRef<Graphics>(null);
   const manager = useRef<ToolManager | null>(null);
 
-  useEffect(() => {
-    if (!appRef.current) return;
-    const app = appRef.current;
-    maskLayer.current = new Graphics();
-    app.stage.addChild(maskLayer.current);
+  const initRenderer = async () => {
+    if (!(containerRef.current && image) || canvasRender.current) return;
+    canvasRender.current = new CanvasRenderer(containerRef.current, image);
+    await canvasRender.current.init();
 
-    manager.current = new ToolManager(maskLayer.current);
+    const maskView = canvasRender.current.getMaskView();
+    if (!maskView) return;
+
+    manager.current = new ToolManager(maskView);
+    manager.current.setRadius(50);
     manager.current.setTool(activeTool);
+    const stage = canvasRender.current?.getApp()?.stage!;
 
-    app.stage.eventMode = "static";
-    app.stage
-      .on("pointerdown", (e: FederatedPointerEvent) => manager.current?.handlePointerDown(e))
-      .on("pointermove", (e: FederatedPointerEvent) => manager.current?.handlePointerMove(e))
-      .on("pointerup", (e: FederatedPointerEvent) => manager.current?.handlePointerUp(e))
-      .on("pointerupoutside", (e: FederatedPointerEvent) => manager.current?.handlePointerUp(e));
+    maskView
+      .on("pointerdown", manager.current?.handlePointerDown)
+      .on("pointerup", manager.current?.handlePointerUp);
 
-    return () => {
-      if (maskLayer.current) {
-        app.stage.removeChild(maskLayer.current);
-        maskLayer.current.destroy();
-      }
-    };
-  }, [appRef]);
+    stage
+      .on("pointerupoutside", manager.current?.handlePointerUp)
+      .on("pointermove", manager.current?.handlePointerMove);
+  }
 
   useEffect(() => {
-    if (!manager.current) return;
-    manager.current.setTool(activeTool);
+    initRenderer();
+  }, [containerRef, image]);
+
+  useEffect(() => {
+    manager.current?.setTool(activeTool);
   }, [activeTool]);
 
   useEffect(() => {
-    if (appRef.current) {
-      appRef.current.stage.visible = showMask;
-    }
+    canvasRender.current?.setMaskVisible(showMask);
   }, [showMask]);
+
+  useEffect(() => {
+    return () => {
+      manager.current?.destroy();
+      canvasRender.current?.destroy();
+      canvasRender.current = null;
+      maskLayer.current = null;
+      manager.current = null;
+    }
+  }, [])
 
   return <div ref={containerRef} className="w-full h-full"></div>;
 }
+
+export default CanvasView;

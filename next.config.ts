@@ -8,12 +8,14 @@ const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline' https://accounts.google.com giscus.app www.googletagmanager.com;
   style-src 'self' 'unsafe-inline' https://accounts.google.com;
-  img-src * blob: data: https://lh3.googleusercontent.com;
+  img-src * blob: data: https://lh3.googleusercontent.com https://image.civitai.com;
+  worker-src 'self' blob:;
   media-src 'self' *.s3.amazonaws.com;
-  connect-src *;
+  connect-src * data: blob:;
   font-src *;
-  frame-src giscus.app https://accounts.google.com
-`
+  frame-src giscus.app https://accounts.google.com;
+`;
+
 
 const securityHeaders = [
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
@@ -127,14 +129,18 @@ const nextConfig: NextConfig = {
     return config
   },
 
-  // async rewrites() {
-  //   return [
-  //     {
-  //       source: '/mark_drop/:path*', // 本地请求路径（前端发起请求的路径）
-  //       destination: 'https://11zf583709up0.vicp.fun/mark_drop/:path*', // 目标代理服务器地址
-  //     },
-  //   ];
-  // },
+  async rewrites() {
+    return [
+      {
+        source: '/mark_drop/:path*', // 本地请求路径（前端发起请求的路径）
+        destination: 'https://11zf583709up0.vicp.fun/mark_drop/:path*', // 目标代理服务器地址
+      },
+      // {
+      //   source: '/mark_drop_oss/:path*', // 本地请求路径（前端发起请求的路径）
+      //   destination: 'https://mark-drop-cn.oss-cn-hangzhou.aliyuncs.com/:path*', // 目标代理服务器地址
+      // },
+    ];
+  },
 };
 
 export default withBundleAnalyzer({

@@ -7,7 +7,6 @@ interface MaskState {
   removeType: RemoveType;
   visible: boolean;
   image: File | null;
-  imageUrl: string | null;
   tool: ToolType;
   showMask: boolean;
   history: ImageData[];
@@ -61,8 +60,7 @@ export const useMaskStore = create<MaskState>((set, get) => ({
   },
 
   setImage: (image) => {
-    const imageUrl = image ? URL.createObjectURL(image) : null;
-    set({ image, imageUrl });
+    set({ image });
   },
 
   setTool: (tool) => set({ tool }),

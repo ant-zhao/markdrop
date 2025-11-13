@@ -3,6 +3,7 @@
 import { DragEvent } from "react";
 import { useMaskStore } from "@/stores/useMaskStore";
 import HomeIcon2 from "@/assets/icon/HomeIcon2";
+import { useRouter } from "next/navigation";
 
 const defaultImages = [
   "https://picsum.photos/80/80",
@@ -12,22 +13,34 @@ const defaultImages = [
 ];
 
 type ImageUploadProps = {
+  goRemove?: boolean;
   showSampleImage?: boolean;
 };
 
-export default function ImageUpload({ showSampleImage = true }: ImageUploadProps) {
+export default function ImageUpload({
+  goRemove = false,
+  showSampleImage = true,
+}: ImageUploadProps) {
+  const router = useRouter();
   const { image, setImage } = useMaskStore();
+
+  const handleSetImage = (img: File) => {
+    setImage(img);
+    if (goRemove) {
+      router.push("/remove");
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
-      setImage(e.target.files[0]);
+      handleSetImage(e.target.files[0]);
     }
   };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (e.dataTransfer.files[0]) {
-      setImage(e.dataTransfer.files[0]);
+      handleSetImage(e.dataTransfer.files[0]);
     }
   };
 
@@ -68,7 +81,6 @@ export default function ImageUpload({ showSampleImage = true }: ImageUploadProps
                 src={src}
                 alt="default"
                 className="w-20 h-20 object-cover rounded-sm border-2 border-gray-200 hover:border-blue-500 cursor-pointer"
-                onClick={() => alert(`You selected image: ${src}`)}
               />
             ))}
           </div>

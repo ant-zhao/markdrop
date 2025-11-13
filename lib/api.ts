@@ -38,15 +38,18 @@ export const stripePayEventApi = async (params: StripeEventApiParams) => {
 interface UploadFileApiParams {
   file: File; // 文件
   bizCode: BizCode; // 业务类型
-  fileType?: string; // 文件类型
+  fileSuffix?: string; // 文件类型
 }
 interface UploadFileApiResData {
   url: string; // 文件url
 }
 
 export const uploadFileApi = async (params: UploadFileApiParams) => {
-  const signRes = await post<{signedUrl: string}>("/file/v1/gen_pre_signed_url", {bizCode: params.bizCode, fileType: params.fileType});
-  if (signRes.code !== 0) {
+  const signRes = await post<{signedUrl: string}>("/file/v1/gen_pre_signed_url", {
+    bizCode: params.bizCode,
+    fileSuffix: params.fileSuffix,
+  });
+  if (signRes.code !== 10000) {
     return signRes;
   }
   return put<UploadFileApiResData>(

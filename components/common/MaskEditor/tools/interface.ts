@@ -4,6 +4,7 @@ export interface DrawingTool {
   onPointerDown(e: FederatedPointerEvent): void;
   onPointerMove(e: FederatedPointerEvent): void;
   onPointerUp(e: FederatedPointerEvent): void;
+  setRadius?: (r: number) => void;
   destroy(): void;
 }
 

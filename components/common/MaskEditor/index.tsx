@@ -3,9 +3,9 @@ import CanvasView from "./CanvasView";
 import { useMaskStore } from "@/stores/useMaskStore";
 
 export default function MaskEditor() {
-  const { visible, tool, imageUrl } = useMaskStore();
+  const { visible, tool, image } = useMaskStore();
 
-  if (!visible || !tool || !imageUrl) return null;
+  if (!visible || !tool || !image) return null;
 
   return (
     <div className="flex w-full h-full overflow-hidden p-2 rounded-xl bg-white shadow-blue-500">
@@ -13,7 +13,7 @@ export default function MaskEditor() {
         <Toolbar />
       </div>
       <div className="flex-1 relative min-w-0 min-h-0 overflow-hidden bg-gray-50">
-        <CanvasView imageUrl={imageUrl} activeTool={tool} />
+        <CanvasView image={image} activeTool={tool} />
       </div>
     </div>
   );

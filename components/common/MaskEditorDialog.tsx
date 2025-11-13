@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import {
   Dialog,
   DialogContent,
@@ -47,6 +48,9 @@ export default function MaskEditorDialog() {
         onInteractOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
+        <VisuallyHidden>
+          <DialogTitle>Mask Editor</DialogTitle>
+        </VisuallyHidden>
         {/* Header bar */}
         <DialogHeader className="border-b border-muted p-2 bg-muted/20">
           <div className="flex justify-end items-center gap-2">

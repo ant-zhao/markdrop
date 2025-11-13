@@ -20,6 +20,8 @@ export default function LayoutClientComponent() {
   };
 
   useEffect(() => {
+    console.log('name===>', hashSHA256('accessToken'));
+
     const accessToken = localStorage.getItem(hashSHA256('accessToken'));
     if (accessToken) {
       setAccessToken(accessToken);
