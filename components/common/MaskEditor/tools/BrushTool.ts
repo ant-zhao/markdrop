@@ -1,53 +1,46 @@
-import { Graphics, FederatedPointerEvent, Point } from "pixi.js";
+import { Graphics, FederatedPointerEvent, Point, Container } from "pixi.js";
 import type { DrawingTool } from "./interface";
 import MaskLayer from "../MaskLayer";
+import { BaseTool } from "./Base";
 
-export class BrushTool implements DrawingTool {
-  private layer: MaskLayer;           // 实际绘制图层
-  private cursorCircle: Graphics;    // 鼠标笔刷预览
+export class BrushTool extends BaseTool {
   private drawing = false;
   private radius: number;
-  private color: number;
-  private alpha: number;
-  private erasing = false;
+  private show = false;
 
-  constructor({
-    layer,
-    radius = 10,
-    color = 0xd314af,
-    alpha = 0.3,
-    erasing,
-  }: {
+  constructor(options: {
+    container: Container;
     layer: MaskLayer;
     erasing: boolean;
     radius?: number;
     color?: number;
     alpha?: number;
   }) {
-    this.layer = layer;
-    this.radius = radius;
-    this.color = erasing ? 0xffffff : color;
-    this.alpha = alpha;
-    this.erasing = erasing;
+    super(options);
+    this.radius = options.radius || 30;
+  }
 
-    // 创建鼠标笔刷预览
-    this.cursorCircle = new Graphics();
-    layer.addChild(this.cursorCircle);
-    this.setRadius(radius);
+  initTool() {
+    this.setRadius(this.radius);
   }
 
   onPointerDown(e: FederatedPointerEvent) {
+    if (!this.show) return;
     this.drawing = true;
     const pos = this.layer.toLocal(e.global);
     this.drawPoint(pos.x, pos.y);
   }
 
   onPointerMove(e: FederatedPointerEvent) {
+    if (!this.show) {
+      this.onPointerOver();
+    }
     // 更新鼠标预览圆位置
-    const pos = this.layer.toLocal(e.global);
-    this.cursorCircle.position.set(pos.x, pos.y);
-
+    const toolPos = this.container.toLocal(e.global);
+    this.preview.position.set(toolPos.x, toolPos.y);
+    
     if (!this.drawing) return;
+    const pos = this.layer.toLocal(e.global);
     this.drawPoint(pos.x, pos.y);
   }
 
@@ -55,16 +48,27 @@ export class BrushTool implements DrawingTool {
     this.drawing = false;
   }
 
+  onPointerOver() {
+    this.show = true;
+    this.setRadius(this.radius);
+  }
+
+  onPointerOut() {
+    this.drawing = false;
+    this.show = false;
+    this.preview.clear();
+  }
+
   private drawPoint(x: number, y: number) {
-    this.layer.drawCircle(x, y, this.radius, !this.erasing);
+    this.layer.drawCircle(x, y, this.radius / this.layer.scale.x, !this.erasing);
   }
 
   // 动态设置笔刷半径
   setRadius(r: number) {
     this.radius = r;
     // 更新鼠标预览圆半径
-    this.cursorCircle.clear();
-    this.cursorCircle
+    this.preview.clear();
+    this.preview
       .circle(0, 0, this.radius)
       .fill({
         color: this.color,
@@ -75,10 +79,5 @@ export class BrushTool implements DrawingTool {
         alpha: 1,
         width: 2,
       });
-  }
-
-  destroy() {
-    this.cursorCircle.removeFromParent();
-    this.cursorCircle.destroy();
   }
 }

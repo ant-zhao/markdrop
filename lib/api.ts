@@ -50,17 +50,32 @@ export const uploadFileApi = async (params: UploadFileApiParams) => {
     fileSuffix: params.fileSuffix,
   });
   if (signRes.code !== 10000) {
-    return signRes;
+    return {
+      code: signRes.code,
+      message: "Image uploaded failed",
+    };
   }
-  return put<UploadFileApiResData>(
-    signRes.data.signedUrl,
-    params.file,
-    {
-      headers: {
-        "Content-Type": "application/octet-stream",
-      },
+  try {
+    await put<UploadFileApiResData>(
+      signRes.data.signedUrl,
+      params.file,
+      {
+        headers: {
+          "Content-Type": "application/octet-stream",
+        },
+      }
+    );
+    return {
+      code: 10000,
+      url: signRes.data.signedUrl.split("?")[0],
+      message: "Image uploaded successfully",
     }
-  );
+  } catch (error) {
+    return {
+      code: 500,
+      message: "Image uploaded failed",
+    }
+  }
 };
 
 

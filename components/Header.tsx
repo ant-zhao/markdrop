@@ -27,7 +27,7 @@ export default async function Header({
     headerClass += " py-1";
   }
   if (isFixed) headerClass += " fixed";
-  if (isSticky) headerClass += " top-0 left-0 z-50";
+  if (isSticky) headerClass += " top-0 left-0 z-100";
 
   return (
     <header className={headerClass + `${customClass ? " " + customClass : ""}`}>

@@ -2,7 +2,7 @@ import { BrushTool } from "./BrushTool";
 import { RectTool } from "./RectTool";
 import { LassoTool } from "./LassoTool";
 import type { DrawingTool } from "./interface";
-import { Application, FederatedPointerEvent } from "pixi.js";
+import { Application, Container, FederatedPointerEvent } from "pixi.js";
 import MaskLayer from "../MaskLayer";
 
 export type ToolType = "brush" | "rect" | "lasso" | "eraser";
@@ -11,18 +11,21 @@ export class ToolManager {
   private tool: DrawingTool | null = null;
   private currentType: ToolType | null = null;
   private layer: MaskLayer;
+  private container: Container;
   private radius: number = 10;
 
-  constructor(layer: MaskLayer) {
+  constructor(layer: MaskLayer, container: Container) {
     this.layer = layer;
+    this.container = container;
   }
 
   setTool(type: ToolType) {
-    if (this.tool) this.tool.destroy();
+    this.destroy();
     this.currentType = type;
     switch (type) {
       case "brush":
         this.tool = new BrushTool({
+          container: this.container,
           layer: this.layer,
           radius: this.radius,
           color: this.layer.color,
@@ -31,18 +34,23 @@ export class ToolManager {
         break;
       case "rect":
         this.tool = new RectTool({
+          container: this.container,
           layer: this.layer,
+          erasing: false,
           color: this.layer.color,
         });
         break;
       case "lasso":
         this.tool = new LassoTool({
+          container: this.container,
           layer: this.layer,
+          erasing: false,
           color: this.layer.color,
         });
         break;
       case "eraser":
         this.tool = new BrushTool({
+          container: this.container,
           layer: this.layer,
           radius: this.radius,
           color: this.layer.color,
@@ -52,15 +60,18 @@ export class ToolManager {
     }
   }
 
-  handlePointerDown = (e: FederatedPointerEvent) => { this.tool?.onPointerDown(e); }
+  handlePointerDown = (e: FederatedPointerEvent) => {
+    if (e.button !== 0) return;
+    this.tool?.onPointerDown(e);
+  }
   handlePointerMove = (e: FederatedPointerEvent) => { this.tool?.onPointerMove(e); }
   handlePointerUp = (e: FederatedPointerEvent) => { this.tool?.onPointerUp(e); }
-
-  // mapScreenToStagePosition(x: number, y: number, app: Application) {
-  //   const point = new Point();
-  //   app.renderer.plugins.interaction.mapPositionToPoint(point, x, y);
-  //   return point;
-  // }
+  handlePointerOut = (e: FederatedPointerEvent) => {
+    this.tool?.onPointerOut(e); 
+  }
+  handlePointerOver = (e: FederatedPointerEvent) => {
+    this.tool?.onPointerOver(e); 
+  }
 
   setRadius(r: number) {
     this.radius = r;

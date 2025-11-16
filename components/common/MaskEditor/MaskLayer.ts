@@ -31,6 +31,26 @@ export default class MaskLayer extends Container {
     this.addChild(this.sprite);
   }
 
+  public updateSize(width: number, height: number) {
+    this.sprite.removeFromParent();
+    this.sprite.destroy();
+
+    this.maskWidth = width;
+    this.maskHeight = height;
+
+    // 1bit mask，用于记录哪些像素被涂抹
+    this.bitmap = new Uint8Array(width * height);
+
+    // RGBA 图像缓冲
+    this.imageData = new Uint8Array(width * height * 4);
+
+    // 初始化纹理（空白）
+    this.texture = Texture.from({resource: this.imageData, width, height});
+    this.sprite = new Sprite(this.texture);
+
+    this.addChild(this.sprite);
+  }
+
   /** 绘制一个圆形区域（fill=true 为增加，false 为擦除） */
   drawCircle(x: number, y: number, radius: number, fill: boolean = true) {
     const minX = Math.max(0, Math.floor(x - radius));
@@ -92,6 +112,28 @@ export default class MaskLayer extends Container {
   clear() {
     this.bitmap.fill(0);
     this.updateTexture();
+  }
+
+  exportToPNG() {
+    return new Promise<Blob>((resolve) => {
+      let canvas: HTMLCanvasElement | null = document.createElement("canvas");
+      canvas.width = this.maskWidth;
+      canvas.height = this.maskHeight;
+
+      const ctx = canvas.getContext("2d")!;
+      const imageData = new ImageData(
+        new Uint8ClampedArray(this.imageData),
+        this.maskWidth,
+        this.maskHeight
+      );
+
+      ctx.putImageData(imageData, 0, 0);
+      canvas.toBlob((blob) => {
+        resolve(blob!);
+        canvas?.remove();
+        canvas = null;
+      }, "image/png");
+    });
   }
 
   /** 更新贴图（高效地将 bitmap 映射为 RGBA 缓冲） */

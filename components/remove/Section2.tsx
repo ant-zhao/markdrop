@@ -1,24 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import cx from 'classnames';
+import { toast } from "sonner";
+import { useEffect, useState } from "react";
 import { useMaskStore } from "@/stores/useMaskStore"
 import ImageSilder from "@/components/common/ImageSilder"
+import MaskEditorDialog from "@/components/common/MaskEditorDialog";
+import Loading from "@/components/common/Loading";
 import { RemoveType } from "@/types/remove";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { uploadFileApi } from "@/lib/api";
+import { submitRemoveApi, uploadFileApi } from "@/lib/api";
 import { BizCode } from "@/lib/type";
 
 const Section2 = () => {
-  const { image, removeType, setRemoveType } = useMaskStore();
-  const [loading, setLoading] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
+  const { loading, visible, image, removeType, canvasRender, setRemoveType, setLoading } = useMaskStore();
   const [url, setUrl] = useState<string | null>(null);
-
+  const [removedUrl, setRemovedUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    setFile(image);
     if (image) {
       setUrl(URL.createObjectURL(image));
     } else {
@@ -26,38 +26,109 @@ const Section2 = () => {
     }
   }, [image])
 
-  if (!file) {
+  if (!image) {
     return null;
   }
 
-  const handleSubmit = async () => {
+  const handleAutoRemove = async () => {
     setLoading(true);
     try {
       const fileRes = await uploadFileApi({
-        file,
+        file: image,
         bizCode: BizCode.MARK_DROP,
-        fileSuffix: file.name.split(".").pop(),
+        fileSuffix: image.name.split(".").pop(),
       });
-      console.log(fileRes);
+      if (fileRes.code !== 10000 || !fileRes.url) {
+        toast.error(fileRes.message);
+        return;
+      }
+      const taskRes = await submitRemoveApi({
+        type: RemoveType.AUTO,
+        fileUrl: fileRes.url,
+      });
+      if (taskRes.code !== 10000) {
+        toast.error(taskRes.message);
+        return;
+      }
     } catch (error) {
+      toast.error("Failed to submit remove task");
       console.error(error);
     } finally {
       setLoading(false);
     }
   }
 
+  const handleManualRemove = async () => {
+    setLoading(true);
+    const maskFile = await canvasRender?.exportMaskAsFile();
+    if (!maskFile) {
+      handleAutoRemove();
+      return;
+    }
+    try {
+      const [imageRes, maskRes] = await Promise.all([
+        uploadFileApi({
+          file: image,
+          bizCode: BizCode.MARK_DROP,
+          fileSuffix: image.name.split(".").pop(),
+        }),
+        uploadFileApi({
+          file: maskFile,
+          bizCode: BizCode.MARK_DROP,
+          fileSuffix: maskFile.name.split(".").pop(),
+        }),
+      ]);
+      if (imageRes.code !== 10000 || !imageRes.url) {
+        toast.error(imageRes.message);
+        return;
+      }
+      if (maskRes.code !== 10000 || !maskRes.url) {
+        toast.error(maskRes.message);
+        return;
+      }
+      const taskRes = await submitRemoveApi({
+        type: RemoveType.MANUAL,
+        fileUrl: imageRes.url,
+        maskUrl: maskRes.url,
+      });
+      if (taskRes.code !== 10000) {
+        toast.error(taskRes.message);
+        return;
+      }
+    } catch (error) {
+      toast.error("Failed to submit remove task");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const handleSubmit = async () => {
+    if (loading) return;
+    if (removeType === RemoveType.AUTO) {
+      handleAutoRemove();
+    } else {
+      handleManualRemove();
+    }
+  }
+
   return (
-    <div className="w-2xl xl:w-3xl mt-4 mb-8 pb-8 overflow-hidden text-center flex flex-col items-center select-none">
-      <div className="w-full px-12 bg-white py-4 mt-4 rounded-sm shadow-md">
+    <div className="w-2xl xl:w-3xl pt-4 mb-8 pb-8 overflow-hidden text-center flex flex-col items-center select-none">
+      <div className={"w-full px-12 py-4 mt-4 rounded-sm " + (visible ? "bg-white shadow-md" : "")}>
         {url && <div className="w-full">
-          <div className="w-full p-2 mb-4 shadow-md border-primary-300 rounded-sm border-dashed border">
+          <div className="relative w-full p-2 mb-4">
             <ImageSilder left={url} />
+            <MaskEditorDialog />
+            {loading && <Loading />}
           </div>
         </div>}
         <div className="w-full text-[0.8rem] flex justify-end items-center">
           <div
             className="flex items-center space-x-2"
-            onClick={() => setRemoveType(removeType === RemoveType.AUTO ? RemoveType.MANUAL : RemoveType.AUTO)}
+            onClick={() => {
+              if (loading) return;
+              setRemoveType(removeType === RemoveType.AUTO ? RemoveType.MANUAL : RemoveType.AUTO);
+            }}
           >
             <Switch
               className={cx(
@@ -77,7 +148,8 @@ const Section2 = () => {
       <div className='w-full flex justify-center items-center pt-8'>
         <Button
           size="sm"
-          className="cursor-pointer px-8 rounded-[2rem] bg-[#415af9]/90 hover:bg-[#415af9]"
+          disabled={loading}
+          className={"cursor-pointer px-8 rounded-[2rem] bg-[#415af9]/90 hover:bg-[#415af9]" + (loading ? " cursor-not-allowed opacity-50" : "")}
           onClick={handleSubmit}
         >
           Remove

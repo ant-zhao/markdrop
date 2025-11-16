@@ -14,7 +14,7 @@ export default function Toolbar() {
   ];
 
   return (
-    <div className="flex flex-col gap-2 py-2 pr-2 text-[#333333]">
+    <div className="flex gap-2 py-2 pr-2 text-[#333333]">
       {tools.map((t) => (
         <button
           key={t.key}
