@@ -8,11 +8,16 @@ import axios, {
 } from "axios";
 import { hashSHA256 } from "@/utils";
 
+const baseURL =
+  typeof window === "undefined"
+    ? process.env.SERVER_API_BASE_URL // 服务端使用
+    : process.env.NEXT_PUBLIC_API_BASE_URL; // 客户端使用
+
 /**
  * 创建 axios 实例
  */
 const request: AxiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL, // 支持环境变量配置
+  baseURL, // 支持环境变量配置
   timeout: 15000,
   headers: {
     "Content-Type": "application/json",
@@ -55,6 +60,8 @@ request.interceptors.response.use(
     return data;
   },
   (error: AxiosError) => {
+    console.log('error====>', error);
+    
     if (error.response) {
       const { status } = error.response;
       switch (status) {

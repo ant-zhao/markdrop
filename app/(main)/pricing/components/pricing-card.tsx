@@ -26,6 +26,20 @@ export default function PricingCard({ plan }: { plan: any }) {
         {plan.type === "selectable" && (
           <CustomPlan options={plan.options} />
         )}
+        {plan.type === "package" && (
+          <div className="plan-type-package">
+            <div className="h-9 flex items-center">
+              {plan.credits} credits
+            </div>
+
+            <p className="mb-1 mt-2">
+              <span className="font-semibold text-2xl">{plan.unit}{plan.price}</span>
+            </p>
+            <p className="text-sm text-gray-500">
+              Billed once
+            </p>
+          </div>
+        )}
         {plan.plans && plan.plans.length > 0 && (
           plan.plans.map((o: any) => (
             <div key={o.type} className={"plan-type-" + o.type}>
