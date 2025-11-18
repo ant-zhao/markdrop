@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LayoutClientComponent from "@/components/common/LayoutCLientComponent";
+import StatusComponent from "@/components/common/StatusComponent";
 
 export const metadata: Metadata = {
   title: "Mark Drop",
@@ -29,6 +30,7 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
         <LayoutClientComponent />
+        <StatusComponent />
       </body>
     </html>
   );

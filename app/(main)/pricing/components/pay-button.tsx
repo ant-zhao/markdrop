@@ -1,31 +1,33 @@
 "use client";
-
+import cx from 'classnames';
+import { Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { usePlanStore } from "@/stores/usePlan";
 
 export default function PayButton({
   planId,
   label,
   highlight,
 }: {
-  planId: string;
+  planId: number;
   label: string;
   highlight?: boolean;
 }) {
-  const handleClick = () => {
-    console.log(`Checkout triggered for plan: ${planId}`);
-    // 这里可挂载真实支付逻辑，例如 Stripe / 自定义 API
-  };
+  const { loading, selectedPackageId } = usePlanStore();
 
   return (
     <Button
-      onClick={handleClick}
+      data-plan-id={planId}
       variant={highlight ? "default" : "outline"}
-      className={`mt-auto cursor-pointer w-full ${highlight
-        ? "bg-[#314af0]/80 hover:bg-[#314af0] text-white"
-        : "border-[#314af0] text-[#314af0] hover:bg-[#314af0]/10"
-        }`}
+      className={cx(`package-pay mt-auto cursor-pointer w-full border-[#314af0]`, {
+        "bg-[#314af0]/90 hover:bg-[#314af0] text-white hover:text-white": highlight || selectedPackageId === planId,
+        "text-[#314af0] hover:text-[#314af0] hover:bg-[#314af0]/10": !(highlight || selectedPackageId === planId),
+      })}
     >
-      {label}
+      <span className={(loading && selectedPackageId === planId) ? "block" : "hidden"}>
+        <Loader className="animate-spin" size={18} />
+      </span>
+      <span>{label}</span>
     </Button>
   );
 }

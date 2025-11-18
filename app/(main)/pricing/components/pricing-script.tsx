@@ -1,11 +1,33 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { usePlanStore } from "@/stores/usePlan";
+import { payApi } from "@/lib/api";
 
 export default () => {
+  const { setSelectedPackageId, setLoading } = usePlanStore();
+  const loading = useRef(false);
 
   useEffect(() => {
     init();
   }, []);
+
+  const startPay = async (planId?: number) => {
+    if (planId === undefined || loading.current) return;
+    loading.current = true;
+    setLoading(true);
+    try {
+      const res = await payApi({ packageId: planId });
+      if (res.code === 10000 && res.data?.payLink) {
+        window.open(res.data.payLink, "_blank");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      loading.current = false;
+      setLoading(false);
+    }
+  }
+
 
   const init = () => {
     // 年/月切换
@@ -26,10 +48,16 @@ export default () => {
     });
 
     // 卡片选中效果
-    document.querySelectorAll("[data-plan-id]").forEach(card => {
+    const cards = document.querySelectorAll("[data-plan-id]");
+    cards.forEach(card => {
+      const planId = (card as HTMLElement).dataset?.planId ? Number((card as HTMLElement).dataset?.planId) : undefined;
       card.addEventListener("click", () => {
-        document.querySelectorAll("[data-plan-id]").forEach(c => c.classList.remove("ring-2", "ring-indigo-500"));
+        cards.forEach(c => c.classList.remove("ring-2", "ring-indigo-500"));
         card.classList.add("ring-2", "ring-indigo-500");
+        setSelectedPackageId(planId);
+      });
+      card.getElementsByClassName("package-pay")[0]?.addEventListener("click", () => {
+        startPay(planId);
       });
     });
   }

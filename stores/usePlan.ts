@@ -11,13 +11,19 @@ export type PlanData = {
 }
 
 interface PlanState {
+  loading: boolean;
+  selectedPackageId: number | undefined;
   plan: PlanData;
   customPlan: CustomPlanData;
   setCustomPlan: (plan: CustomPlanData) => void;
   setPayAnnually: (payAnnually: boolean) => void;
+  setSelectedPackageId: (selectedPackageId: number | undefined) => void;
+  setLoading: (loading: boolean) => void;
 }
 
 export const usePlanStore = create<PlanState>((set) => ({
+  loading: false,
+  selectedPackageId: undefined,
   customPlan: { label: "500 credits", price: "$38" },
   plan: {
     payAnnually: true,
@@ -34,4 +40,6 @@ export const usePlanStore = create<PlanState>((set) => ({
       payAnnually,
     },
   })),
+  setSelectedPackageId: (packageId: number | undefined) => set({ selectedPackageId: packageId }),
+  setLoading: (loading: boolean) => set({ loading }),
 }));

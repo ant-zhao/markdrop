@@ -60,8 +60,6 @@ request.interceptors.response.use(
     return data;
   },
   (error: AxiosError) => {
-    console.log('error====>', error);
-    
     if (error.response) {
       const { status } = error.response;
       switch (status) {
@@ -87,7 +85,7 @@ request.interceptors.response.use(
   }
 );
 
-type ResponseData<T> = {
+export type ResponseData<T> = {
   code: number;
   data: T;
   message: string;

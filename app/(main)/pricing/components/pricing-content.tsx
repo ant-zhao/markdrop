@@ -1,9 +1,17 @@
 import { getPackageListApi } from "@/lib/api";
 import PricingCard from "./pricing-card";
+import { ResponseData } from "@/lib/request";
+import { GetPackageListApiResData } from "@/lib/api";
 
 export default async function PricingContent() {
-  const packages = await getPackageListApi();
-  if (packages.code !== 10000 || (packages.data || []).length === 0) {
+  let packages: ResponseData<GetPackageListApiResData[]> | undefined;
+  try {
+    packages = await getPackageListApi();
+  } catch (error) {
+    console.error("Failed to fetch packages:", error);
+  }
+
+  if (packages?.code !== 10000 || (packages?.data || []).length === 0) {
     return null;
   }
 

@@ -6,15 +6,14 @@ import { BizCode, PointChangeTypeEnum, TaskState } from "@/lib/type";
  * 请求支付接口
  */
 interface PayApiParams {
-  packageId: string; // 套餐ID
+  packageId: number; // 套餐ID
 }
 interface PayApiResData {
   payLink: string; // 支付链接
 }
 
 export const payApi = async (params: PayApiParams) => {
-  const res = await post<PayApiResData>("/pay", params);
-  return res.data;
+  return post<PayApiResData>("/pay/v1/stripe/pay", params);
 };
 
 /**
@@ -150,7 +149,7 @@ export const getUserInfoApi = async () => {
 /**
  * 获取套餐列表
  */
-type GetPackageListApiResData = {
+export type GetPackageListApiResData = {
   id: string;
   name: string;
   description: string;

@@ -8,3 +8,8 @@ export function md5(str: string): string {
 export function hashSHA256(data: string) {
   return SHA256(data).toString();
 }
+
+export function redirectWithoutBack(url: string) {
+  history.replaceState(null, '', url);
+  window.location.href = url;
+}
