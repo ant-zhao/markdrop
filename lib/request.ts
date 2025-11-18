@@ -55,6 +55,10 @@ request.interceptors.response.use(
       console.error(`[API Error] ${data.message}`);
       return Promise.reject(data);
     }
+
+    if (data.code === 11002 && !window.location.href.includes('/auth/')) {
+      window.location.href = `/auth/login?returnTo=${encodeURIComponent(window.location.href)}`;
+    }
     
     // 后端返回 { code, data, message } 时可在这里统一解析
     return data;

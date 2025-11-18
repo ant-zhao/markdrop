@@ -16,7 +16,7 @@ const UserState = () => {
 
   return (
     <div className='flex-shrink-0 items-center gap-x-4 hidden sm:flex'>
-      <Link href="/auth/login">
+      <Link href={`/auth/login?returnTo=${encodeURIComponent(window.location.href)}`}>
         <Button
           className="text-white bg-[#314af0]/80 hover:bg-[#314af0] px-4 h-[32px] rounded-[16px] cursor-pointer"
         >

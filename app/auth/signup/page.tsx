@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,6 +19,7 @@ const fakeSignup = async (data: {
 };
 
 export default function SignupForm() {
+  const params = useSearchParams();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -66,12 +68,14 @@ export default function SignupForm() {
     if (errors[key]) setErrors((prev) => ({ ...prev, [key]: "" }));
   };
 
+  const returnTo = params.get('returnTo') || "/";
+
   return (
     <div className="flex-1 overflow-auto">
       <div className="min-h-screen">
         <div className="h-[48px] pr-4 flex justify-end items-center text-sm text-center text-gray-500">
           <span className="pr-2">Already have an account?</span>
-          <Link href="/auth/login">
+          <Link href={`/auth/login${returnTo ? `?returnTo=${returnTo}` : ""}`} replace>
             <Button size="sm" className="cursor-pointer rounded-[2rem] bg-[#415af9]/90 hover:bg-[#415af9]">
               Login
             </Button>

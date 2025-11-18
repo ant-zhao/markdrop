@@ -3,7 +3,8 @@ export enum MessageType {
   Online = 'online',      // 页面上线
   Ack = 'ack',            // 确认收到
   Heartbeat = 'heartbeat',// 心跳检测
-  Offline = 'offline'     // 页面下线
+  Offline = 'offline',    // 页面下线
+  PaySuccess = 'pay-success', // 支付成功
 }
 
 // 消息数据结构
@@ -62,6 +63,12 @@ export default class PageCommunicator {
 
         case MessageType.Offline:
           this.alivePages.delete(from);
+          break;
+
+        case MessageType.PaySuccess:
+          window.location.reload();
+          break;
+        default:
           break;
       }
     });

@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect } from "react";
 import { CheckCircle } from "lucide-react"
 import { useStatusStore } from "@/stores/useStatus";
 import { redirectWithoutBack } from "@/utils";
+import { MessageType } from "@/lib/page-communicator";
 
 export default function SuccessPage() {
   const { communicator } = useStatusStore();
@@ -13,6 +15,10 @@ export default function SuccessPage() {
     description: `Your order has been paid successfully`,
     secondaryText: null
   };
+
+  useEffect(() => {
+    communicator?.send({ type: MessageType.PaySuccess });
+  }, []);
 
   const handleClose = () => {
     try {

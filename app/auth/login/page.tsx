@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +14,7 @@ const fakeLogin = async (data: { email: string; password: string }) => {
 };
 
 export default function LoginForm() {
+  const params = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -56,12 +58,14 @@ export default function LoginForm() {
     if (errors[key]) setErrors((prev) => ({ ...prev, [key]: "" }));
   };
 
+  const returnTo = params.get('returnTo') || "/";
+
   return (
     <div className="flex-1 overflow-auto">
       <div className="min-h-screen">
         <div className="h-[48px] pr-4 flex justify-end items-center text-sm text-center text-gray-500">
           <span className="pr-2">Don’t have an account?</span>
-          <Link href="/auth/signup" className="text-indigo-600 hover:underline">
+          <Link href={`/auth/signup${returnTo ? `?returnTo=${returnTo}` : ""}`} className="text-indigo-600 hover:underline" replace>
             <Button size="sm" className="cursor-pointer rounded-[2rem] bg-[#415af9]/90 hover:bg-[#415af9]">
               Sign up
             </Button>
