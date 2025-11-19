@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function AuthIndexPage() {
-  redirect("/personal/account");
+  redirect("/profile/account");
 }

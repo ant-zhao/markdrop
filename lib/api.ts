@@ -96,7 +96,7 @@ interface SubmitRemoveApiResData {
 }
 
 export const submitRemoveApi = async (params: SubmitRemoveApiParams) => {
-  return post<SubmitRemoveApiResData>("/task/v1/submit/drop_mark", params);
+  return post<SubmitRemoveApiResData>("/task/v1/submit", params);
 };
 
 
@@ -168,19 +168,20 @@ export const getPackageListApi = async () => {
 type GetPointConsumptionRecordApiParams = {
   pageNum: number;
   pageSize: number;
-  pointChangeTypeEnum: PointChangeTypeEnum;
-  bizCode: BizCode;
+  pointChangeTypeEnum?: PointChangeTypeEnum;
+  bizCode?: BizCode;
 }
-type GetPointConsumptionRecordApiResData = {
+export type PointConsumptionRecordData = {
+  id: string;
+  bizCode: BizCode;
+  usedPoint: number;
+  createTime: string;
+};
+export type GetPointConsumptionRecordApiResData = {
   pageNum: number;
   pageSize: number;
   total: number;
-  list: {
-    id: string;
-    bizCode: BizCode;
-    usedPoint: number;
-    createTime: string;
-  }[];
+  list: PointConsumptionRecordData[];
 }
 export const getPointConsumptionRecordApi = async (params: GetPointConsumptionRecordApiParams) => {
   return get<GetPointConsumptionRecordApiResData>("/point_change_log/v1/list_point_change_log", params);

@@ -10,6 +10,10 @@ import { USER_MODE } from '@/types/user';
 const UserState = () => {
   const { userMode, userInfo } = useUserStore();
 
+  if (userMode === USER_MODE.UNKNOWN) {
+    return <div></div>
+  }
+
   if (userMode === USER_MODE.LOGGED_IN && userInfo?.id) {
     return <AvatarMenu />
   }

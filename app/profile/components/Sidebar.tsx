@@ -1,15 +1,16 @@
 "use client"
 
-import { Home, User, CreditCard, Headphones } from "lucide-react"
+import { Home, User, CreditCard, ReceiptText, Headphones } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 
 const navItems = [
   { name: "Home", href: "/", icon: Home },
-  { name: "My account", href: "/personal/account", icon: User },
-  { name: "My plan", href: "/personal/plan", icon: CreditCard },
-  { name: "Support", href: "/personal/support", icon: Headphones },
+  { name: "My account", href: "/profile/account", icon: User },
+  { name: "Usage & billing", href: "/profile/records", icon: ReceiptText },
+  { name: "My plan", href: "/profile/plan", icon: CreditCard },
+  { name: "Support", href: "/profile/support", icon: Headphones },
 ]
 
 export default function Sidebar() {

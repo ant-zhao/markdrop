@@ -8,6 +8,6 @@ const headerNavLinks = [
 
 export const roundedHeaderPages = ["/", "/remove", "/privacy-policy", "/terms-service", '/pricing'];
 
-export const rectangleHeaderPages = ["/personal"];
+export const rectangleHeaderPages = ["/profile"];
 
 export default headerNavLinks
