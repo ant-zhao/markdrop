@@ -47,13 +47,13 @@ export function ServerTable<TData>({
 
   return (
     <div className="space-y-4">
-      <div className="rounded-md border">
+      <div className="rounded-[4px] h-[calc(50vh+3rem)]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
+                  <TableHead className="h-[3rem] py-0 bg-[#f5f5f5]" key={header.id}>
                     {header.column.columnDef.header as string}
                   </TableHead>
                 ))}
@@ -61,18 +61,18 @@ export function ServerTable<TData>({
             ))}
           </TableHeader>
 
-          <TableBody className="h-[50vh] overflow-y-auto">
+          <TableBody className="max-h-[50vh] overflow-y-auto">
             {data.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  <FileQuestionMark className="w-12 h-12 m-auto text-gray-400" />
+              <TableRow className="bg-[#f5f5f5]">
+                <TableCell colSpan={columns.length} className="h-12 py-0 text-center">
+                  <FileQuestionMark className="w-12 h-10 m-auto text-gray-400" />
                 </TableCell>
               </TableRow>
             )}
             {data.map((row: any, i: number) => (
-              <TableRow key={i}>
+              <TableRow key={i} className="bg-[#f5f5f5]">
                 {table.getVisibleLeafColumns().map((col) => (
-                  <TableCell key={col.id}>{row[col.id]}</TableCell>
+                  <TableCell className="h-12 py-0" key={col.id}>{row[col.id]}</TableCell>
                 ))}
               </TableRow>
             ))}

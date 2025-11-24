@@ -40,17 +40,22 @@ export default function RecordsPage() {
   };
 
   const handleChangePage = (page: number) => {
+    if ((page + 1) === data.pageNum) return;
     setData({
       ...data,
-      pageNum: page,
+      pageNum: page + 1,
     });
-    loadData(page);
+    loadData(page + 1);
   };
 
   // 当页码或筛选条件改变 → 请求接口
   useEffect(() => {
     loadData(1);
   }, [pointChangeType]);
+
+  useEffect(() => {
+    loadData(1);
+  }, []);
 
   useEffect(() => {
     loadData(data.pageNum);
@@ -76,7 +81,7 @@ export default function RecordsPage() {
           columns={columns}
           data={data.list}
           total={data.total}
-          pageIndex={data.pageNum}
+          pageIndex={data.pageNum - 1}
           pageSize={data.pageSize}
           onPageChange={handleChangePage}
         />

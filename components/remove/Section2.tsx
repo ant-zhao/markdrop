@@ -2,7 +2,7 @@
 
 import cx from 'classnames';
 import { toast } from "sonner";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMaskStore } from "@/stores/useMaskStore"
 import ImageSilder from "@/components/common/ImageSilder"
 import MaskEditorDialog from "@/components/common/MaskEditorDialog";
@@ -10,13 +10,21 @@ import Loading from "@/components/common/Loading";
 import { RemoveType } from "@/types/remove";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { submitRemoveApi, uploadFileApi } from "@/lib/api";
-import { BizCode } from "@/lib/type";
+import { getTaskStatusApi, submitRemoveApi, uploadFileApi } from "@/lib/api";
+import { BizCode, TaskState } from "@/lib/type";
 
 const Section2 = () => {
-  const { loading, visible, image, removeType, canvasRender, setRemoveType, setLoading } = useMaskStore();
+  const { loading, visible, image, maskImage, removeType, canvasRender, setRemoveType, setLoading, setMaskImage } = useMaskStore();
   const [url, setUrl] = useState<string | null>(null);
-  const [removedUrl, setRemovedUrl] = useState<string | null>(null);
+  const [removedUrl, setRemovedUrl] = useState<string | undefined>();
+  const interval = useRef<number | null>(null);
+
+  const cleanInterval = () => {
+    if (interval.current) {
+      clearInterval(interval.current);
+      interval.current = null;
+    }
+  }
 
   useEffect(() => {
     if (image) {
@@ -24,10 +32,35 @@ const Section2 = () => {
     } else {
       setUrl(null);
     }
+    cleanInterval();
+    setRemovedUrl(undefined);
   }, [image])
 
   if (!image) {
     return null;
+  }
+
+  const getTaskStatus = async (taskId: string) => {
+    cleanInterval();
+    return new Promise<void>((resolve) => {
+      interval.current = window.setInterval(async () => {
+        const taskRes = await getTaskStatusApi({
+          taskId,
+        });
+        if (taskRes.code !== 10000) {
+          toast.error(taskRes.message);
+          setMaskImage();
+          resolve();
+          return;
+        }
+        if ([TaskState.SUCCESS, TaskState.FAIL, TaskState.CANCEL].includes(taskRes.data.state)) {
+          if (taskRes.data.state === TaskState.SUCCESS && taskRes.data.result) {
+            setRemovedUrl(taskRes.data.result);
+          }
+          resolve();
+        }
+      }, 2000);
+    });
   }
 
   const handleAutoRemove = async () => {
@@ -44,12 +77,15 @@ const Section2 = () => {
       }
       const taskRes = await submitRemoveApi({
         type: RemoveType.AUTO,
-        fileUrl: fileRes.url,
+        imageUrl: fileRes.url,
+        bizCode: BizCode.MARK_DROP,
       });
       if (taskRes.code !== 10000) {
         toast.error(taskRes.message);
         return;
       }
+      await getTaskStatus(taskRes.data.taskId);
+      cleanInterval();
     } catch (error) {
       toast.error("Failed to submit remove task");
       console.error(error);
@@ -66,6 +102,7 @@ const Section2 = () => {
       return;
     }
     try {
+      setMaskImage(URL.createObjectURL(maskFile));
       const [imageRes, maskRes] = await Promise.all([
         uploadFileApi({
           file: image,
@@ -88,13 +125,16 @@ const Section2 = () => {
       }
       const taskRes = await submitRemoveApi({
         type: RemoveType.MANUAL,
-        fileUrl: imageRes.url,
+        imageUrl: imageRes.url,
         maskUrl: maskRes.url,
+        bizCode: BizCode.MARK_DROP,
       });
       if (taskRes.code !== 10000) {
         toast.error(taskRes.message);
         return;
       }
+      await getTaskStatus(taskRes.data.taskId);
+      cleanInterval();
     } catch (error) {
       toast.error("Failed to submit remove task");
       console.error(error);
@@ -112,17 +152,25 @@ const Section2 = () => {
     }
   }
 
+  const handleDownload = () => {
+    if (!removedUrl) return;
+    const link = document.createElement('a');
+    link.href = removedUrl;
+    link.download = `${image.name.split(".").shift()}-${new Date().getTime()}.png`;
+    link.click();
+  }
+
   return (
     <div className="w-2xl xl:w-3xl pt-4 mb-8 pb-8 overflow-hidden text-center flex flex-col items-center select-none">
       <div className={"w-full px-12 py-4 mt-4 rounded-sm " + (visible ? "bg-white shadow-md" : "")}>
         {url && <div className="w-full">
           <div className="relative w-full p-2 mb-4">
-            <ImageSilder left={url} />
-            <MaskEditorDialog />
-            {loading && <Loading />}
+            <ImageSilder left={url} right={removedUrl} demo={false} />
+            {/* {!maskImage && <MaskEditorDialog />} */}
+            {loading ? <Loading /> : (!maskImage && <MaskEditorDialog />)}
           </div>
         </div>}
-        <div className="w-full text-[0.8rem] flex justify-end items-center">
+        <div className={"w-full text-[0.8rem] flex justify-end items-center" + (loading || removedUrl ? ' hidden' : '')}>
           <div
             className="flex items-center space-x-2"
             onClick={() => {
@@ -146,14 +194,25 @@ const Section2 = () => {
         </div>
       </div>
       <div className='w-full flex justify-center items-center pt-8'>
-        <Button
-          size="sm"
-          disabled={loading}
-          className={"cursor-pointer px-8 rounded-[2rem] bg-[#415af9]/90 hover:bg-[#415af9]" + (loading ? " cursor-not-allowed opacity-50" : "")}
-          onClick={handleSubmit}
-        >
-          Remove
-        </Button>
+        {removedUrl ? (
+          <Button
+            size="sm"
+            disabled={loading}
+            className={"cursor-pointer px-8 rounded-[2rem] bg-[#415af9]/90 hover:bg-[#415af9]" + (loading ? " cursor-not-allowed opacity-50" : "")}
+            onClick={handleDownload}
+          >
+            Download
+          </Button>
+        ) : (
+          <Button
+            size="sm"
+            disabled={loading}
+            className={"cursor-pointer px-8 rounded-[2rem] bg-[#415af9]/90 hover:bg-[#415af9]" + (loading ? " cursor-not-allowed opacity-50" : "")}
+            onClick={handleSubmit}
+          >
+            Remove
+          </Button>
+        )}
       </div>
     </div>
   )

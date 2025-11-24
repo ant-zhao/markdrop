@@ -28,6 +28,7 @@ export function PaginationComp({
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
+            className={`${pageIndex > 0 ? "cursor-pointer" : "cursor-not-allowed opacity-50"}`}
             onClick={() => pageIndex > 0 && onPageChange(pageIndex - 1)}
           />
         </PaginationItem>
@@ -35,6 +36,7 @@ export function PaginationComp({
         {Array.from({ length: totalPages }).map((_, i) => (
           <PaginationItem key={i}>
             <PaginationLink
+              className="cursor-pointer"
               isActive={i === pageIndex}
               onClick={() => onPageChange(i)}
             >
@@ -45,6 +47,7 @@ export function PaginationComp({
 
         <PaginationItem>
           <PaginationNext
+            className={`${pageIndex < totalPages - 1 ? "cursor-pointer" : "cursor-not-allowed opacity-50"}`}
             onClick={() =>
               pageIndex < totalPages - 1 && onPageChange(pageIndex + 1)
             }

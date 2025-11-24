@@ -120,9 +120,25 @@ export default class MaskLayer extends Container {
       canvas.width = this.maskWidth;
       canvas.height = this.maskHeight;
 
+      const newImageData = new Uint8Array(this.imageData.length);
+      for (let i = 0; i < this.bitmap.length; i++) {
+        const v = this.bitmap[i];
+        const offset = i * 4;
+        if (this.imageData[offset + 3] === 0) {
+          newImageData[offset] = 0;
+          newImageData[offset + 1] = 0;
+          newImageData[offset + 2] = 0;
+        } else {
+          newImageData[offset] = 255;
+          newImageData[offset + 1] = 255;
+          newImageData[offset + 2] = 255;
+        }
+        newImageData[offset + 3] = 1;
+      }
+
       const ctx = canvas.getContext("2d")!;
       const imageData = new ImageData(
-        new Uint8ClampedArray(this.imageData),
+        new Uint8ClampedArray(newImageData),
         this.maskWidth,
         this.maskHeight
       );

@@ -5,16 +5,20 @@ import ImageSliderScript from "./ImageSliderScript";
 
 export default function ImageSlider({
   left,
+  left1,
   right,
   largeLine,
+  demo = true,
 }: {
   left: string;
+  left1?: string;
   right?: string;
   largeLine?: boolean;
+  demo?: boolean;
 }) {
   const id = React.useId(); // ✅ 仅用于唯一 DOM id（SSR 安全）
 
-  if (left && right) {
+  if (left && right && demo) {
     return null;
   }
 
@@ -44,6 +48,12 @@ export default function ImageSlider({
             alt="Image 2"
             className="object-cover w-full h-full"
           />
+          {left1 && (<Image
+            src={left1}
+            fill
+            alt="Image 2-1"
+            className="object-cover w-full h-full absolute top-0 left-0"
+          />)}
         </div>
       </div>
       {right && (<div
@@ -63,7 +73,7 @@ export default function ImageSlider({
         </div>
       </div>)}
 
-      <ImageSliderScript id={id} />
+      <ImageSliderScript id={id} active={!!left && !!right} />
     </div>
   );
 }

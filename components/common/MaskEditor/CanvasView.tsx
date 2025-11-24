@@ -1,4 +1,3 @@
-import { Graphics } from "pixi.js";
 import { useEffect, useRef } from "react";
 import { CanvasRenderer } from "@/components/common/MaskEditor/canvasRenderer";
 import { ToolManager } from "@/components/common/MaskEditor/tools/ToolManager";
@@ -13,44 +12,93 @@ interface CanvasViewProps {
 
 const CanvasView = ({ image }: CanvasViewProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { canvasRender, showMask, tool, isPan, isFullscreen, setIsPan, setCanvasRender } = useMaskStore();
-  const maskLayer = useRef<Graphics>(null);
+  const {
+    loading,
+    canvasRender,
+    showMask,
+    tool,
+    isPan,
+    isFullscreen,
+    setIsPan,
+    setCanvasRender,
+  } = useMaskStore();
+  const currentRender = useRef<CanvasRenderer | null>(canvasRender);
   const manager = useRef<ToolManager | null>(null);
 
   const initRenderer = async () => {
     if (!containerRef.current || !image) return;
-    let renderer = canvasRender;
+    let renderer = currentRender.current;
     if (renderer) {
       renderer.updateImage(image);
-      return;
+    } else {
+      currentRender.current = new CanvasRenderer(containerRef.current, image);
+      setCanvasRender(currentRender.current);
+      await currentRender.current.init();
     }
-    renderer = new CanvasRenderer(containerRef.current, image);
-    setCanvasRender(renderer);
-    await renderer.init();
 
-    const maskView = renderer.getMaskView();
-    const assistantView = renderer.getAssistantView();
+    const maskView = currentRender.current?.getMaskView();
+    const assistantView = currentRender.current?.getAssistantView();
     if (!maskView || !assistantView) return;
 
-    manager.current = new ToolManager(maskView, assistantView);
+    if (!manager.current) {
+      manager.current = new ToolManager(maskView, assistantView);
+    }
     manager.current.setRadius(50);
     manager.current.setTool(tool);
-    const stage = renderer.getApp()?.stage!;
-
-    maskView
-      .on("pointerdown", manager.current?.handlePointerDown)
-      .on("pointerup", manager.current?.handlePointerUp);
-
-    stage
-      .on("pointerenter", manager.current?.handlePointerOver)
-      .on("pointerleave", manager.current?.handlePointerOut)
-      .on("pointermove", manager.current?.handlePointerMove);
-
+    addListener();
     updateCursor();
+  };
+
+  const handlePointerDown = (e: any) => {
+    if (loading) return;
+    manager.current?.handlePointerDown(e);
+  }
+
+  const handlePointerUp = (e: any) => {
+    if (loading) return;
+    manager.current?.handlePointerUp(e);
+  }
+
+  const handlePointerOver = (e: any) => {
+    if (loading) return;
+    manager.current?.handlePointerOver(e);
+  }
+
+  const handlePointerOut = (e: any) => {
+    if (loading) return;
+    manager.current?.handlePointerOut(e);
+  }
+
+  const handlePointerMove = (e: any) => {
+    if (loading) return;
+    manager.current?.handlePointerMove(e);
+  }
+
+  const addListener = () => {
+    const maskView = currentRender.current?.getMaskView();
+    const stage = currentRender.current?.getApp()?.stage;
+    maskView?.on("pointerdown", handlePointerDown)
+      .on("pointerup", handlePointerUp);
+
+    stage?.on("pointerenter", handlePointerOver)
+      .on("pointerleave", handlePointerOut)
+      .on("pointermove", handlePointerMove);
+  }
+
+  const removeListener = () => {
+    const maskView = currentRender.current?.getMaskView();
+    const stage = currentRender.current?.getApp()?.stage;
+
+    maskView?.off("pointerdown", handlePointerDown)
+      .off("pointerup", handlePointerUp);
+
+    stage?.off("pointerenter", handlePointerOver)
+      .off("pointerleave", handlePointerOut)
+      .off("pointermove", handlePointerMove);
   }
 
   useEffect(() => {
-    canvasRender?.resize();
+    currentRender.current?.resize();
   }, [isFullscreen]);
 
   useEffect(() => {
@@ -63,10 +111,11 @@ const CanvasView = ({ image }: CanvasViewProps) => {
   }, [tool]);
 
   useEffect(() => {
-    canvasRender?.setMaskVisible(showMask);
+    currentRender.current?.setMaskVisible(showMask);
   }, [showMask]);
 
   useEffect(() => {
+    initRenderer();
     events.canvasEmitter.on(EventType.PAN, updatePanState);
     return () => {
       events.canvasEmitter.off(EventType.PAN, updatePanState);
@@ -108,21 +157,10 @@ const CanvasView = ({ image }: CanvasViewProps) => {
   }
 
   const destory = () => {
-    const maskView = canvasRender?.getMaskView();
-    const stage = canvasRender?.getApp()?.stage;
-
-    maskView?.off("pointerdown", manager.current?.handlePointerDown)
-      .off("pointerup", manager.current?.handlePointerUp);
-
-    stage?.off("pointerenter", manager.current?.handlePointerOver)
-      .off("pointerleave", manager.current?.handlePointerOut)
-      .off("pointermove", manager.current?.handlePointerMove);
-
+    console.log('destory');
     manager.current?.destroy();
-    canvasRender?.destroy();
-    setCanvasRender(null);
-    maskLayer.current = null;
     manager.current = null;
+    removeListener();
   }
 
   return <div ref={containerRef} className="w-full h-full"></div>;

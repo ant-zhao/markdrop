@@ -4,7 +4,7 @@ import { useMaskStore } from "@/stores/useMaskStore";
 import { ToolType } from "./tools/interface";
 
 export default function Toolbar() {
-  const { tool, setTool } = useMaskStore();
+  const { loading, tool, setTool } = useMaskStore();
 
   const tools = [
     { key: ToolType.BRUSH, icon: <Brush size={16} />, label: "Brush" },
@@ -20,8 +20,10 @@ export default function Toolbar() {
           key={t.key}
           className={cx('flex items-center gap-2 p-2 rounded border-[1px] cursor-pointer hover:text-[#4f46e5]', {
             [tool === t.key ? "bg-[rgb(79,70,229,0.2)] border-[#4f46e5] text-[#4f46e5]" : "border-[transparent]"]: true,
+            'cursor-not-allowed opacity-50': loading,
           })}
           onClick={() => {
+            if (loading) return;
             setTool(t.key);
           }}
         >

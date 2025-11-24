@@ -12,8 +12,8 @@ interface PayApiResData {
   payLink: string; // 支付链接
 }
 
-export const payApi = async (params: PayApiParams) => {
-  return post<PayApiResData>("/pay/v1/stripe/pay", params);
+export const payApi = async (data: PayApiParams) => {
+  return post<PayApiResData>("/pay/v1/stripe/pay", data);
 };
 
 /**
@@ -26,8 +26,8 @@ interface StripeEventApiResData {
   
 }
 
-export const stripePayEventApi = async (params: StripeEventApiParams) => {
-  return post<StripeEventApiResData>("/pay/v1/stripe/webhook", params);
+export const stripePayEventApi = async (data: StripeEventApiParams) => {
+  return post<StripeEventApiResData>("/pay/v1/stripe/webhook", data);
 };
 
 
@@ -83,11 +83,11 @@ export const uploadFileApi = async (params: UploadFileApiParams) => {
  */
 type SubmitRemoveApiParamsAuto = {
   type: RemoveType.AUTO;
-  fileUrl: string;
+  imageUrl: string;
 }
 type SubmitRemoveApiParamsManual = {
   type: RemoveType.MANUAL;
-  fileUrl: string;
+  imageUrl: string;
   maskUrl: string;
 }
 type SubmitRemoveApiParams = SubmitRemoveApiParamsAuto | SubmitRemoveApiParamsManual;
@@ -95,10 +95,12 @@ interface SubmitRemoveApiResData {
   taskId: string;
 }
 
-export const submitRemoveApi = async (params: SubmitRemoveApiParams) => {
-  return post<SubmitRemoveApiResData>("/task/v1/submit", params);
+export const submitRemoveApi = async ({bizCode, ...params}: SubmitRemoveApiParams & {bizCode: BizCode}) => {
+  return post<SubmitRemoveApiResData>("/task/v1/submit", {
+    bizCode,
+    taskParam: params
+  });
 };
-
 
 /**
  * 获取任务状态
@@ -109,7 +111,7 @@ type GetTaskStatusApiParams = {
 type GetTaskStatusApiResData = {
   id: string;
   state: TaskState;
-  result: any;
+  result: string;
 }
 export const getTaskStatusApi = async (params: GetTaskStatusApiParams) => {
   return get<GetTaskStatusApiResData>("/task/v1/query_task", params);
@@ -125,8 +127,8 @@ type LoginApiParams = {
 type LoginApiResData = {
   accessToken: string;
 }
-export const loginApi = async (params: LoginApiParams) => {
-  return post<LoginApiResData>("/user/v1/login", params);
+export const loginApi = async (data: LoginApiParams) => {
+  return post<LoginApiResData>("/user/v1/login", data);
 };
 
 
@@ -183,6 +185,6 @@ export type GetPointConsumptionRecordApiResData = {
   total: number;
   list: PointConsumptionRecordData[];
 }
-export const getPointConsumptionRecordApi = async (params: GetPointConsumptionRecordApiParams) => {
-  return get<GetPointConsumptionRecordApiResData>("/point_change_log/v1/list_point_change_log", params);
+export const getPointConsumptionRecordApi = async (data: GetPointConsumptionRecordApiParams) => {
+  return post<GetPointConsumptionRecordApiResData>("/point_change_log/v1/list_point_change_log", data);
 };

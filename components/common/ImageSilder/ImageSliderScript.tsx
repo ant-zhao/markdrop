@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-export default function ImageSliderScript({ id }: { id: string }) {
+export default function ImageSliderScript({ id, active }: { id: string, active?: boolean }) {
   const dragging = useRef(false);
   const root = useRef<HTMLElement>(null);
   const clip = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ export default function ImageSliderScript({ id }: { id: string }) {
       if (!root.current || !clip.current || !slider.current) return;
       root.current.removeEventListener("mousedown", onMouseDown);
     }
-  }, [id])
+  }, [id, active])
 
   const onMouseMove = (e: MouseEvent) => {
     if (!dragging.current || !root.current || !clip.current || !slider.current) return;

@@ -10,6 +10,7 @@ interface MaskState {
   visible: boolean;
   isFullscreen: boolean;
   image: File | null;
+  maskImage?: string;
   tool: ToolType;
   isPan: boolean;
   showMask: boolean;
@@ -23,6 +24,7 @@ interface MaskState {
   toggleMask: () => void;
   current: () => ImageData | null;
   setImage: (image: File | null) => void;
+  setMaskImage: (maskImage?: string) => void;
   setTool: (tool: ToolType) => void;
   setIsPan: (isPan: boolean) => void;
   setRemoveType: (type: RemoveType) => void;
@@ -35,7 +37,7 @@ export const useMaskStore = create<MaskState>((set, get) => ({
   loading: false,
   removeType: RemoveType.AUTO,
   image: null,
-  imageUrl: null,
+  maskImage: undefined,
   visible: false,
   tool: ToolType.BRUSH,
   isPan: false,
@@ -72,7 +74,11 @@ export const useMaskStore = create<MaskState>((set, get) => ({
   },
 
   setImage: (image) => {
-    set({ image });
+    set({ image, maskImage: undefined });
+  },
+
+  setMaskImage: (maskImage) => {
+    set({ maskImage });
   },
 
   setTool: (tool) => set({ tool }),
