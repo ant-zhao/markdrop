@@ -1,11 +1,10 @@
 import { BrushTool } from "./BrushTool";
 import { RectTool } from "./RectTool";
 import { LassoTool } from "./LassoTool";
-import type { DrawingTool } from "./interface";
-import { Application, Container, FederatedPointerEvent } from "pixi.js";
+import { ToolType, type DrawingTool } from "./interface";
+import { Container, FederatedPointerEvent } from "pixi.js";
 import MaskLayer from "../MaskLayer";
 
-export type ToolType = "brush" | "rect" | "lasso" | "eraser";
 
 export class ToolManager {
   private tool: DrawingTool | null = null;

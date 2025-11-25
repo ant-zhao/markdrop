@@ -2,6 +2,7 @@ import cx from 'classnames';
 import { Brush, Square, Lasso, Eraser } from "lucide-react";
 import { useMaskStore } from "@/stores/useMaskStore";
 import { ToolType } from "./tools/interface";
+import { BrushRadius } from "./tools/BrushRaduis";
 
 export default function Toolbar() {
   const { loading, tool, setTool } = useMaskStore();
@@ -16,20 +17,23 @@ export default function Toolbar() {
   return (
     <div className="flex gap-2 py-2 pr-2 text-[#333333]">
       {tools.map((t) => (
-        <button
-          key={t.key}
-          className={cx('flex items-center gap-2 p-2 rounded border-[1px] cursor-pointer hover:text-[#4f46e5]', {
-            [tool === t.key ? "bg-[rgb(79,70,229,0.2)] border-[#4f46e5] text-[#4f46e5]" : "border-[transparent]"]: true,
-            'cursor-not-allowed opacity-50': loading,
-          })}
-          onClick={() => {
-            if (loading) return;
-            setTool(t.key);
-          }}
-        >
-          {t.icon}
-        </button>
+        <>
+          <button
+            key={t.key}
+            className={cx('flex items-center gap-2 p-2 rounded border-[1px] cursor-pointer hover:text-[#4f46e5]', {
+              [tool === t.key ? "bg-[rgb(79,70,229,0.2)] border-[#4f46e5] text-[#4f46e5]" : "border-[transparent]"]: true,
+              'cursor-not-allowed opacity-50': loading,
+            })}
+            onClick={() => {
+              if (loading) return;
+              setTool(t.key);
+            }}
+          >
+            {t.icon}
+          </button>
+        </>
       ))}
+      {[ToolType.BRUSH, ToolType.ERASER].includes(tool) && <BrushRadius />}
     </div>
   );
 }

@@ -16,7 +16,7 @@ const createImageTexture = async (file: File) => {
 };
 
 export class CanvasRenderer {
-  private container: HTMLDivElement | null;
+  public container: HTMLDivElement | null;
   private image: File | null;
   private app: Application | null = null;
   private imageView: Container | null = null;
@@ -88,9 +88,19 @@ export class CanvasRenderer {
     this.setupResizeListeners();
   }
 
-  async updateImage(newImage: File) {
+  async updateImage(container: HTMLDivElement, newImage: File) {
     this.image = newImage;
     if (!this.imageView) return;
+    if (this.container) {
+      this.container.innerHTML = "";
+    }
+    this.container = container;
+    if (!this.app) {
+      this.init();
+      return;
+    }
+
+    this.container.appendChild(this.app.canvas);
     this.imageView.children.forEach((child) => child.destroy());
     this.imageView.removeChildren();
 
@@ -100,6 +110,7 @@ export class CanvasRenderer {
     this.maskView?.updateSize(sprite.width, sprite.height);
 
     this.resetView();
+    this.setupResizeListeners();
   }
 
   public resize() {
@@ -114,6 +125,8 @@ export class CanvasRenderer {
     if (!this.imageView || !this.maskView || !this.app) return;
 
     const sprite = this.imageView.children[0] as Sprite;
+    if (!sprite) return;
+
     const { width: viewW, height: viewH } = this.app.renderer;
     const imgW = sprite.texture.width;
     const imgH = sprite.texture.height;
@@ -212,14 +225,7 @@ export class CanvasRenderer {
 
   private setupResizeListeners() {
     if (!this.container || !this.app) return;
-
-    const updateResolution = () => {
-      if (!this.app || !this.container) return;
-      const bounding = this.container.getBoundingClientRect();
-      this.app.renderer.resolution = window.devicePixelRatio;
-      this.app.renderer.resize(bounding.width, bounding.height);
-      this.renderImage();
-    };
+    this.removeResizeListeners();
 
     this.resizeObserver = new ResizeObserver(() => {
       if (!this.app || !this.container) return;
@@ -229,7 +235,18 @@ export class CanvasRenderer {
     this.mediaQuery = window.matchMedia(
       `(resolution: ${window.devicePixelRatio}dppx)`
     );
-    this.mediaQuery.addEventListener("change", updateResolution);
+    this.mediaQuery.addEventListener("change", this.updateResolution);
+  }
+
+  private removeResizeListeners() {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+    if (this.mediaQuery) {
+      this.mediaQuery.removeEventListener("change", this.updateResolution);
+      this.mediaQuery = null;
+    }
   }
 
   private updateImagePosition(x: number, y: number) {
@@ -244,16 +261,7 @@ export class CanvasRenderer {
       this.app.destroy(true, true);
       this.app = null;
     }
-
-    if (this.resizeObserver && this.container) {
-      this.resizeObserver.disconnect();
-      this.resizeObserver = null;
-    }
-
-    if (this.mediaQuery) {
-      this.mediaQuery.removeEventListener("change", this.updateResolution);
-      this.mediaQuery = null;
-    }
+    this.removeResizeListeners();
 
     this.imageView = null;
     this.maskView = null;

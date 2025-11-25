@@ -17,10 +17,13 @@ const CanvasView = ({ image }: CanvasViewProps) => {
     canvasRender,
     showMask,
     tool,
+    brushRadius,
     isPan,
     isFullscreen,
     setIsPan,
     setCanvasRender,
+    setBrushRadius,
+    getBrushRadius,
   } = useMaskStore();
   const currentRender = useRef<CanvasRenderer | null>(canvasRender);
   const manager = useRef<ToolManager | null>(null);
@@ -29,7 +32,7 @@ const CanvasView = ({ image }: CanvasViewProps) => {
     if (!containerRef.current || !image) return;
     let renderer = currentRender.current;
     if (renderer) {
-      renderer.updateImage(image);
+      renderer.updateImage(containerRef.current, image);
     } else {
       currentRender.current = new CanvasRenderer(containerRef.current, image);
       setCanvasRender(currentRender.current);
@@ -43,7 +46,7 @@ const CanvasView = ({ image }: CanvasViewProps) => {
     if (!manager.current) {
       manager.current = new ToolManager(maskView, assistantView);
     }
-    manager.current.setRadius(50);
+    manager.current.setRadius(brushRadius);
     manager.current.setTool(tool);
     addListener();
     updateCursor();
@@ -74,6 +77,22 @@ const CanvasView = ({ image }: CanvasViewProps) => {
     manager.current?.handlePointerMove(e);
   }
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (!manager.current || ![ToolType.BRUSH, ToolType.ERASER].includes(tool)) return;
+    switch (e.key) {
+      case "=":
+      case "-":
+        let newRadius = getBrushRadius();
+        if (e.key === "=") {
+          newRadius += 5;
+        } else {
+          newRadius -= 5;
+        }
+        setBrushRadius(newRadius);
+        break;
+    }
+  }
+
   const addListener = () => {
     const maskView = currentRender.current?.getMaskView();
     const stage = currentRender.current?.getApp()?.stage;
@@ -83,6 +102,8 @@ const CanvasView = ({ image }: CanvasViewProps) => {
     stage?.on("pointerenter", handlePointerOver)
       .on("pointerleave", handlePointerOut)
       .on("pointermove", handlePointerMove);
+
+    document.addEventListener("keydown", handleKeyDown);
   }
 
   const removeListener = () => {
@@ -95,6 +116,8 @@ const CanvasView = ({ image }: CanvasViewProps) => {
     stage?.off("pointerenter", handlePointerOver)
       .off("pointerleave", handlePointerOut)
       .off("pointermove", handlePointerMove);
+
+    document.removeEventListener("keydown", handleKeyDown);
   }
 
   useEffect(() => {
@@ -109,6 +132,10 @@ const CanvasView = ({ image }: CanvasViewProps) => {
     manager.current?.setTool(tool);
     updateCursor();
   }, [tool]);
+
+  useEffect(() => {
+    manager.current?.setRadius(brushRadius);
+  }, [brushRadius]);
 
   useEffect(() => {
     currentRender.current?.setMaskVisible(showMask);

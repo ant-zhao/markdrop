@@ -1,7 +1,6 @@
 import SectionContainer from "../common/SectionContainer"
 import ImageUpload from "@/components/common/ImageUpload"
 import CustomLink from "@/components/common/Link"
-import Section2 from "./Section2"
 
 const Section1 = () => {
   return (

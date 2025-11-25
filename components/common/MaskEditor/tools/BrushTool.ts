@@ -77,7 +77,7 @@ export class BrushTool extends BaseTool {
       .stroke({
         color: this.color,
         alpha: 1,
-        width: 2,
+        width: 1,
       });
   }
 }

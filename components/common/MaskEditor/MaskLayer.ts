@@ -48,6 +48,7 @@ export default class MaskLayer extends Container {
     this.texture = Texture.from({resource: this.imageData, width, height});
     this.sprite = new Sprite(this.texture);
 
+    this.removeChildren();
     this.addChild(this.sprite);
   }
 

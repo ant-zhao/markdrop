@@ -12,6 +12,7 @@ interface MaskState {
   image: File | null;
   maskImage?: string;
   tool: ToolType;
+  brushRadius: number;
   isPan: boolean;
   showMask: boolean;
   history: ImageData[];
@@ -26,11 +27,13 @@ interface MaskState {
   setImage: (image: File | null) => void;
   setMaskImage: (maskImage?: string) => void;
   setTool: (tool: ToolType) => void;
+  setBrushRadius: (radius: number) => void;
   setIsPan: (isPan: boolean) => void;
   setRemoveType: (type: RemoveType) => void;
   setLoading: (loading: boolean) => void;
   setIsFullscreen: (isFullscreen: boolean) => void;
   setCanvasRender: (canvasRender: CanvasRenderer | null) => void;
+  getBrushRadius: () => number;
 }
 
 export const useMaskStore = create<MaskState>((set, get) => ({
@@ -40,6 +43,7 @@ export const useMaskStore = create<MaskState>((set, get) => ({
   maskImage: undefined,
   visible: false,
   tool: ToolType.BRUSH,
+  brushRadius: 30,
   isPan: false,
   showMask: true,
   history: [],
@@ -83,6 +87,8 @@ export const useMaskStore = create<MaskState>((set, get) => ({
 
   setTool: (tool) => set({ tool }),
 
+  setBrushRadius: (radius) => set({ brushRadius: Math.min(200, Math.max(10, radius)) }),
+
   setIsPan: (isPan) => set({ isPan }),
 
   setRemoveType: (type) => {
@@ -94,4 +100,6 @@ export const useMaskStore = create<MaskState>((set, get) => ({
   setIsFullscreen: (isFullscreen) => set({ isFullscreen }),
 
   setCanvasRender: (canvasRender) => set({ canvasRender }),
+
+  getBrushRadius: () => get().brushRadius,
 }));

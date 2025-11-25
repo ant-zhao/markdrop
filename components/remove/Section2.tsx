@@ -16,7 +16,7 @@ import { BizCode, TaskState } from "@/lib/type";
 const Section2 = () => {
   const { loading, visible, image, maskImage, removeType, canvasRender, setRemoveType, setLoading, setMaskImage } = useMaskStore();
   const [url, setUrl] = useState<string | null>(null);
-  const [removedUrl, setRemovedUrl] = useState<string | undefined>();
+  const [removedUrl, setRemovedUrl] = useState<{ url: string, fileSuffix: string } | undefined>();
   const interval = useRef<number | null>(null);
 
   const cleanInterval = () => {
@@ -55,7 +55,20 @@ const Section2 = () => {
         }
         if ([TaskState.SUCCESS, TaskState.FAIL, TaskState.CANCEL].includes(taskRes.data.state)) {
           if (taskRes.data.state === TaskState.SUCCESS && taskRes.data.result) {
-            setRemovedUrl(taskRes.data.result);
+            const fileSuffix = taskRes.data.result.split('?')[0].split(".").pop() || "png";
+            try {
+              const res = await fetch(taskRes.data.result);
+              const blob = await res.blob();
+              const url = URL.createObjectURL(blob);
+
+              setRemovedUrl({ url, fileSuffix });
+            } catch (error) {
+              const image = new Image();
+              image.onload = () => {
+                setRemovedUrl({ url: taskRes.data.result, fileSuffix });
+              };
+              image.src = taskRes.data.result;
+            }
           }
           resolve();
         }
@@ -155,66 +168,71 @@ const Section2 = () => {
   const handleDownload = () => {
     if (!removedUrl) return;
     const link = document.createElement('a');
-    link.href = removedUrl;
-    link.download = `${image.name.split(".").shift()}-${new Date().getTime()}.png`;
+    link.href = removedUrl.url;
+    link.download = `${image.name.split(".").shift()}-${new Date().getTime()}.${removedUrl.fileSuffix}`;
     link.click();
   }
 
   return (
-    <div className="w-2xl xl:w-3xl pt-4 mb-8 pb-8 overflow-hidden text-center flex flex-col items-center select-none">
-      <div className={"w-full px-12 py-4 mt-4 rounded-sm " + (visible ? "bg-white shadow-md" : "")}>
-        {url && <div className="w-full">
-          <div className="relative w-full p-2 mb-4">
-            <ImageSilder left={url} right={removedUrl} demo={false} />
-            {/* {!maskImage && <MaskEditorDialog />} */}
-            {loading ? <Loading /> : (!maskImage && <MaskEditorDialog />)}
-          </div>
-        </div>}
-        <div className={"w-full text-[0.8rem] flex justify-end items-center" + (loading || removedUrl ? ' hidden' : '')}>
-          <div
-            className="flex items-center space-x-2"
-            onClick={() => {
-              if (loading) return;
-              setRemoveType(removeType === RemoveType.AUTO ? RemoveType.MANUAL : RemoveType.AUTO);
-            }}
-          >
-            <Switch
-              className={cx(
-                "data-[state=checked]:bg-black bg-neutral-700 relative h-3 w-6",
-              )}
-              thumbClassName="size-2 relative data-[state=unchecked]:left-[8%] data-[state=checked]:left-3 data-[state=checked]:translate-x-[5%]"
-              checked={removeType === RemoveType.MANUAL}
-            />
-            <span
-              className="text-sm text-neutral-800 font-medium"
+    <>
+      {image && removeType === RemoveType.MANUAL && (
+        <div className="h-10"></div>
+      )}
+      <div className="w-2xl xl:w-3xl pt-4 mb-8 pb-8 overflow-hidden text-center flex flex-col items-center select-none">
+        <div className={"w-full px-12 py-4 mt-4 rounded-sm " + (visible ? "bg-white shadow-md" : "")}>
+          {url && <div className="w-full">
+            <div className="relative w-full p-2 mb-4">
+              <ImageSilder left={url} right={removedUrl?.url} demo={false} />
+              {/* {!maskImage && <MaskEditorDialog />} */}
+              {loading ? <Loading /> : (!maskImage && <MaskEditorDialog />)}
+            </div>
+          </div>}
+          <div className={"w-full text-[0.8rem] flex justify-end items-center" + (loading || removedUrl ? ' hidden' : '')}>
+            <div
+              className="flex items-center space-x-2"
+              onClick={() => {
+                if (loading) return;
+                setRemoveType(removeType === RemoveType.AUTO ? RemoveType.MANUAL : RemoveType.AUTO);
+              }}
             >
-              Try manual edit
-            </span>
+              <Switch
+                className={cx(
+                  "data-[state=checked]:bg-black bg-neutral-700 relative h-3 w-6",
+                )}
+                thumbClassName="size-2 relative data-[state=unchecked]:left-[8%] data-[state=checked]:left-3 data-[state=checked]:translate-x-[5%]"
+                checked={removeType === RemoveType.MANUAL}
+              />
+              <span
+                className="text-sm text-neutral-800 font-medium"
+              >
+                Try manual edit
+              </span>
+            </div>
           </div>
         </div>
+        <div className='w-full flex justify-center items-center pt-8'>
+          {removedUrl ? (
+            <Button
+              size="sm"
+              disabled={loading}
+              className={"cursor-pointer px-8 rounded-[2rem] bg-[#415af9]/90 hover:bg-[#415af9]" + (loading ? " cursor-not-allowed opacity-50" : "")}
+              onClick={handleDownload}
+            >
+              Download
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              disabled={loading}
+              className={"cursor-pointer px-8 rounded-[2rem] bg-[#415af9]/90 hover:bg-[#415af9]" + (loading ? " cursor-not-allowed opacity-50" : "")}
+              onClick={handleSubmit}
+            >
+              Remove
+            </Button>
+          )}
+        </div>
       </div>
-      <div className='w-full flex justify-center items-center pt-8'>
-        {removedUrl ? (
-          <Button
-            size="sm"
-            disabled={loading}
-            className={"cursor-pointer px-8 rounded-[2rem] bg-[#415af9]/90 hover:bg-[#415af9]" + (loading ? " cursor-not-allowed opacity-50" : "")}
-            onClick={handleDownload}
-          >
-            Download
-          </Button>
-        ) : (
-          <Button
-            size="sm"
-            disabled={loading}
-            className={"cursor-pointer px-8 rounded-[2rem] bg-[#415af9]/90 hover:bg-[#415af9]" + (loading ? " cursor-not-allowed opacity-50" : "")}
-            onClick={handleSubmit}
-          >
-            Remove
-          </Button>
-        )}
-      </div>
-    </div>
+    </>
   )
 }
 
