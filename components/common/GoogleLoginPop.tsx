@@ -18,10 +18,14 @@ export default function GoogleLoginPop({ mode }: Props) {
   }, [mode, googleLoaded]);
 
   useEffect(() => {
+    if (mode === USER_MODE.LOGGED_IN || !googleLoaded) {
+      return;
+    }
     initGoogleLogin();
   }, []);
 
-  const initGoogleLogin = () => {
+  const initGoogleLogin = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 10000));
     const lastPopTime = localStorage.getItem('last_pop_time');
     if (lastPopTime && Date.now() - parseInt(lastPopTime) < 1000 * 60 * 60 * 24) {
       return;

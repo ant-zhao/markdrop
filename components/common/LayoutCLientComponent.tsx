@@ -31,7 +31,10 @@ export default function LayoutClientComponent() {
   }, [accessToken]);
 
   const getUserInfo = async () => {
-    if (!accessToken) return;
+    if (!accessToken) {
+      setUserMode(USER_MODE.LOGOUT);
+      return;
+    }
     const res2 = await getUserInfoApi();
     if (res2.code !== SUCCESS_CODE) {
       toast.error(res2.message);

@@ -57,7 +57,7 @@ request.interceptors.response.use(
     }
 
     if (data.code === 11002 && !window.location.href.includes('/auth/')) {
-      window.location.href = `/auth/login?returnTo=${encodeURIComponent(window.location.href)}`;
+      window.location.href = `/auth/login?redirect_uri=${encodeURIComponent(window.location.href)}`;
     }
     
     // 后端返回 { code, data, message } 时可在这里统一解析
