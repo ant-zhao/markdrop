@@ -7,6 +7,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import { hashSHA256 } from "@/utils";
+import { CacheKey } from "@/utils/constants";
 
 const baseURL =
   typeof window === "undefined"
@@ -30,7 +31,7 @@ const request: AxiosInstance = axios.create({
 request.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // 可在这里统一附加 token
-    const token = typeof window !== "undefined" ? localStorage.getItem(hashSHA256('accessToken')) : null;
+    const token = typeof window !== "undefined" ? localStorage.getItem(hashSHA256(CacheKey.ACCESS_TOKEN)) : null;
     if (token && config.headers) {
       config.headers.Token = token;
       // 统一处理额外请求头
@@ -70,7 +71,7 @@ request.interceptors.response.use(
         case 401:
           console.warn("No Authorization");
           if (typeof window !== "undefined") {
-            localStorage.removeItem(hashSHA256('accessToken'));
+            localStorage.removeItem(hashSHA256(CacheKey.ACCESS_TOKEN));
           }
           break;
         case 403:

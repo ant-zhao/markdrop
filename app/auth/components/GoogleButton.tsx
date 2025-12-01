@@ -3,19 +3,20 @@ import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { useConfigurationStore } from "@/stores/useConfig";
 import { useUserStore } from "@/stores/useUser";
+import { googleOAuthURL } from "@/lib/utils";
 
-export default function GoogleButton() {
+export default function GoogleButton({ redirectUri }: { redirectUri: string }) {
   const renderedRef = useRef(false);
   const { googleLoaded } = useConfigurationStore();
   const { handleCredentialResponse } = useUserStore();
 
-  useEffect(() => {
-    renderButton();
-  }, [googleLoaded]);
+  // useEffect(() => {
+  //   renderButton();
+  // }, [googleLoaded]);
 
-  useEffect(() => {
-    renderButton();
-  }, []);
+  // useEffect(() => {
+  //   renderButton();
+  // }, []);
 
   const renderButton = () => {
     if (renderedRef.current || !googleLoaded) return;
@@ -33,16 +34,13 @@ export default function GoogleButton() {
 
     window.google.accounts.id.renderButton(
       buttonDom,
-      { theme: 'outline', size: 'large' }
+      { theme: 'outline', size: 'large', width: '100%' }
     );
   }
 
-  const onClick = () => {
-    handleCredentialResponse({
-      credential: "test",
-      select_by: "user",
-      clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-    })
+  const onClick = async () => {
+    const link = await googleOAuthURL(redirectUri);
+    window.location.href = link;
   }
 
   return (

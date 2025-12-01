@@ -123,6 +123,9 @@ export const getTaskStatusApi = async (params: GetTaskStatusApiParams) => {
  */
 type LoginApiParams = {
   idToken: string;
+} | {
+  authorizationCode: string;
+  codeVerifier: string;
 }
 type LoginApiResData = {
   accessToken: string;

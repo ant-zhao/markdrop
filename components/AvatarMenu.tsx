@@ -7,6 +7,7 @@ import { LogOut, User } from "lucide-react";
 import { hashSHA256 } from "@/utils";
 import { useUserStore } from "@/stores/useUser";
 import { USER_MODE } from "@/types/user";
+import { CacheKey } from "@/utils/constants";
 
 export default function UserAvatarMenu() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function UserAvatarMenu() {
   const handleLogout = () => {
     setUserMode(USER_MODE.LOGOUT);
     setUser(null);
-    localStorage.removeItem(hashSHA256('accessToken'));
+    localStorage.removeItem(hashSHA256(CacheKey.ACCESS_TOKEN));
   };
 
   return (

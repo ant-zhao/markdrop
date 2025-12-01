@@ -4,11 +4,11 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import Script from "next/script";
 import { useConfigurationStore } from "@/stores/useConfig";
+import { SUCCESS_CODE, CacheKey } from "@/utils/constants";
 import { useUserStore } from "@/stores/useUser";
 import { getUserInfoApi } from "@/lib/api";
-import { hashSHA256 } from "@/utils";
-import { SUCCESS_CODE } from "@/utils/constants";
 import { USER_MODE } from "@/types/user";
+import { hashSHA256 } from "@/utils";
 
 export default function LayoutClientComponent() {
   const { setGoogleLoaded } = useConfigurationStore();
@@ -20,7 +20,7 @@ export default function LayoutClientComponent() {
   };
 
   useEffect(() => {
-    const accessToken = localStorage.getItem(hashSHA256('accessToken'));
+    const accessToken = localStorage.getItem(hashSHA256(CacheKey.ACCESS_TOKEN));
     if (accessToken) {
       setAccessToken(accessToken);
     }

@@ -4,7 +4,7 @@ import { USER_MODE } from "@/types/user";
 import { loginApi } from "@/lib/api";
 import { toast } from "sonner";
 import { hashSHA256 } from "@/utils";
-import { SUCCESS_CODE } from "@/utils/constants";
+import { CacheKey, SUCCESS_CODE } from "@/utils/constants";
 
 export type User = {
   id: string;
@@ -24,6 +24,7 @@ interface UserState {
   setUserMode: (mode: USER_MODE) => void;
   clearUser: () => void;
   handleCredentialResponse: (response: google.accounts.id.CredentialResponse) => Promise<any>;
+  handleCodeVerifierResponse: (code: string) => Promise<any>;
 }
 
 const handleCredentialResponse = async (response: google.accounts.id.CredentialResponse, set: (state: Partial<UserState>) => void) => {
@@ -36,7 +37,29 @@ const handleCredentialResponse = async (response: google.accounts.id.CredentialR
   }
 
   const { accessToken } = res.data;
-  localStorage.setItem(hashSHA256('accessToken'), accessToken);
+  localStorage.setItem(hashSHA256(CacheKey.ACCESS_TOKEN), accessToken);
+  set({ accessToken });
+}
+
+const handleCodeVerifierResponse = async (
+  code: string,
+  set: (state: Partial<UserState>) => void,
+) => {
+  const codeVerifier = localStorage.getItem(hashSHA256(CacheKey.GOOGLE_CODE_VERIFIER));
+  if (!codeVerifier) {
+    toast.error("Code verifier not found");
+    return;
+  }
+  localStorage.removeItem(hashSHA256(CacheKey.GOOGLE_CODE_VERIFIER));
+  const res = await loginApi({ authorizationCode: code, codeVerifier });
+
+  if (res.code !== SUCCESS_CODE) {
+    toast.error(res.message);
+    return;
+  }
+
+  const { accessToken } = res.data;
+  localStorage.setItem(hashSHA256(CacheKey.ACCESS_TOKEN), accessToken);
   set({ accessToken });
 }
 
@@ -50,5 +73,8 @@ export const useUserStore = create<UserState>((set) => ({
   clearUser: () => set({ userInfo: null, userMode: USER_MODE.LOGOUT }),
   handleCredentialResponse: (response: google.accounts.id.CredentialResponse) => {
     return handleCredentialResponse(response, set);
-  }
+  },
+  handleCodeVerifierResponse: (code: string) => {
+    return handleCodeVerifierResponse(code, set);
+  },
 }));
