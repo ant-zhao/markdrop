@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  next-app:
+    # 构建镜像（基于当前目录的Dockerfile）
+    build: .
+    # 容器名称
+    container_name: next-js-app
+    # 端口映射：服务器端口:容器端口（左侧可自定义，如80:3000）
+    ports:
+      - "3000:3000"
+    # 环境变量配置（方式1：直接写入，敏感信息不推荐）
+    # environment:
+    #   - NEXT_PUBLIC_API_BASE_URL=https://api.your-domain.com
+    #   - SECRET_KEY=your-secret-key-123
+    # 环境变量配置（方式2：通过.env.prod文件挂载，推荐）
+    env_file:
+      - .env.production
+    # 容器重启策略
+    restart: always
+    # （可选）数据卷挂载（若需持久化数据）
+    volumes:
+      - ./logs:/app/logs

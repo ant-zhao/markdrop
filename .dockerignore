@@ -1,0 +1,18 @@
+# 依赖目录
+node_modules
+# 构建产物（本地构建的产物无需复制，镜像内会重新构建）
+.next
+# 环境变量文件（本地.env，生产环境可通过挂载或Docker Compose传递）
+.env
+.env.local
+.env.development
+# 日志和缓存
+npm-debug.log
+pnpm-debug.log
+yarn-debug.log
+# Git相关
+.git
+.gitignore
+# 其他无关文件
+README.md
+.DS_Store
