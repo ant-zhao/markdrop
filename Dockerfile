@@ -25,7 +25,7 @@ FROM node:20-alpine AS runner
 # 设置工作目录
 WORKDIR /app
 
-# 复制构建阶段的产物
+# 复制Next.js配置和静态资源
 COPY --from=builder /app/next.config.ts ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
@@ -36,4 +36,4 @@ COPY --from=builder /app/package.json ./package.json
 EXPOSE 3000
 
 # 启动项目
-CMD ["pnpm", "run", "start"]
+CMD ["npx", "NODE_ENV=production", "next", "start", "-p", "3000"]
