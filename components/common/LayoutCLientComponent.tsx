@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react";
-import { toast as toastSonner, Toaster } from "sonner";
 import Script from "next/script";
+import { useEffect, useState } from "react";
+import { toast, Toaster } from "sonner";
 import { useConfigurationStore } from "@/stores/useConfig";
 import { SUCCESS_CODE, CacheKey } from "@/utils/constants";
 import { useUserStore } from "@/stores/useUser";
@@ -14,8 +14,6 @@ export default function LayoutClientComponent() {
   const [initialized, setInitialized] = useState(false);
   const { setGoogleLoaded } = useConfigurationStore();
   const { accessToken, setAccessToken, setUser, setUserMode } = useUserStore();
-
-  window.toast = toastSonner;
 
   const handleGoogleScriptLoad = () => {
     setGoogleLoaded(true);
@@ -41,7 +39,7 @@ export default function LayoutClientComponent() {
     }
     const res2 = await getUserInfoApi();
     if (res2.code !== SUCCESS_CODE) {
-      window.toast?.error(res2.message);
+      toast.error(res2.message);
       return;
     }
 

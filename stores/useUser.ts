@@ -1,4 +1,5 @@
 // stores/userStore.ts
+import { toast } from "sonner";
 import { create } from "zustand";
 import { USER_MODE } from "@/types/user";
 import { loginApi } from "@/lib/api";
@@ -33,7 +34,7 @@ const handleCredentialResponse = async (response: google.accounts.id.CredentialR
   const res = await loginApi({ idToken });
 
   if (res.code !== SUCCESS_CODE) {
-    window.toast?.error(res.message);
+    toast.error(res.message);
     return;
   }
 
@@ -48,14 +49,14 @@ const handleCodeVerifierResponse = async (
 ) => {
   const codeVerifier = localStorage.getItem(hashSHA256(CacheKey.GOOGLE_CODE_VERIFIER));
   if (!codeVerifier) {
-    window.toast?.error("Code verifier not found");
+    toast.error("Code verifier not found");
     return;
   }
   localStorage.removeItem(hashSHA256(CacheKey.GOOGLE_CODE_VERIFIER));
   const res = await loginApi({ authorizationCode: code, codeVerifier });
 
   if (res.code !== SUCCESS_CODE) {
-    window.toast?.error(res.message);
+    toast.error(res.message);
     return;
   }
 

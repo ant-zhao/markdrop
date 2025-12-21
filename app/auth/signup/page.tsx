@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Loader } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Loading from "@/components/common/Loading";
 import GoogleButton from "../components/GoogleButton";
 import Link from "next/link";
 
@@ -19,7 +20,7 @@ const fakeSignup = async (data: {
   return new Promise((resolve) => setTimeout(resolve, 1000));
 };
 
-export default function SignupForm() {
+function SignupForm() {
   const params = useSearchParams();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -191,3 +192,9 @@ export default function SignupForm() {
     </div>
   );
 }
+
+export default () => (
+  <Suspense fallback={<Loading />}>
+    <SignupForm />
+  </Suspense>
+)

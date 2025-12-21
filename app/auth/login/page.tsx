@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Loader } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import Loading from "@/components/common/Loading";
 import GoogleButton from "../components/GoogleButton";
 import Link from "next/link";
 
@@ -14,7 +15,7 @@ const fakeLogin = async (data: { email: string; password: string }) => {
   return new Promise((resolve) => setTimeout(resolve, 1000));
 };
 
-export default function LoginForm() {
+function LoginForm() {
   const params = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -142,3 +143,9 @@ export default function LoginForm() {
     </div>
   );
 }
+
+export default () => (
+  <Suspense fallback={<Loading />}>
+    <LoginForm />
+  </Suspense>
+)

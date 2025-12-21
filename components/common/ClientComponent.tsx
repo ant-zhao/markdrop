@@ -26,7 +26,7 @@ export default function ClientComponent() {
   const checkOuth = () => {
     if (authPages.find(page => pathname.startsWith(page)) && userMode !== USER_MODE.LOGGED_IN) {
       setTimeout(() => {
-        window.toast?.error("Please login first");
+        toast.error("Please login first");
       }, 500);
     }
   }

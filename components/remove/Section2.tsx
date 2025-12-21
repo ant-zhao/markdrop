@@ -1,6 +1,7 @@
 "use client";
 
 import cx from 'classnames';
+import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { useMaskStore } from "@/stores/useMaskStore"
 import ImageSilder from "@/components/common/ImageSilder"
@@ -47,7 +48,7 @@ const Section2 = () => {
           taskId,
         });
         if (taskRes.code !== 10000) {
-          window.toast?.error(taskRes.message);
+          toast.error(taskRes.message);
           setMaskImage();
           resolve();
           return;
@@ -84,7 +85,7 @@ const Section2 = () => {
         fileSuffix: image.name.split(".").pop(),
       });
       if (fileRes.code !== 10000 || !fileRes.url) {
-        window.toast?.error(fileRes.message);
+        toast.error(fileRes.message);
         return;
       }
       const taskRes = await submitRemoveApi({
@@ -93,13 +94,13 @@ const Section2 = () => {
         bizCode: BizCode.MARK_DROP,
       });
       if (taskRes.code !== 10000) {
-        window.toast?.error(taskRes.message);
+        toast.error(taskRes.message);
         return;
       }
       await getTaskStatus(taskRes.data.taskId);
       cleanInterval();
     } catch (error) {
-      window.toast?.error("Failed to submit remove task");
+      toast.error("Failed to submit remove task");
       console.error(error);
     } finally {
       setLoading(false);
@@ -128,11 +129,11 @@ const Section2 = () => {
         }),
       ]);
       if (imageRes.code !== 10000 || !imageRes.url) {
-        window.toast?.error(imageRes.message);
+        toast.error(imageRes.message);
         return;
       }
       if (maskRes.code !== 10000 || !maskRes.url) {
-        window.toast?.error(maskRes.message);
+        toast.error(maskRes.message);
         return;
       }
       const taskRes = await submitRemoveApi({
@@ -142,13 +143,13 @@ const Section2 = () => {
         bizCode: BizCode.MARK_DROP,
       });
       if (taskRes.code !== 10000) {
-        window.toast?.error(taskRes.message);
+        toast.error(taskRes.message);
         return;
       }
       await getTaskStatus(taskRes.data.taskId);
       cleanInterval();
     } catch (error) {
-      window.toast?.error("Failed to submit remove task");
+      toast.error("Failed to submit remove task");
       console.error(error);
     } finally {
       setLoading(false);
