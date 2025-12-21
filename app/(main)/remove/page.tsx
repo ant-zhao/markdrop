@@ -2,6 +2,7 @@ import Header from "@/components/Header";
 import Section1 from "@/components/remove/Section1";
 import Section4 from "@/components/home/Section4";
 import Section2 from "@/components/remove/Section2";
+// import RemoveScript from "./script";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
         </section>
         <Section4 />
       </main>
+      {/* <RemoveScript /> */}
     </div>
   );
 }

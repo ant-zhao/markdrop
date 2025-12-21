@@ -1,3 +1,4 @@
+
 declare module '*.svg' {
   import * as React from 'react'
   const SVG: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
@@ -5,6 +6,7 @@ declare module '*.svg' {
 }
 
 interface Window {
+  toast?: any;
   google?: typeof google;
 }
 

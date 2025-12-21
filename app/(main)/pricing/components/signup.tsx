@@ -5,7 +5,7 @@ import { useUserStore } from "@/stores/useUser";
 export default () => {
   const { userInfo } = useUserStore();
 
-  if (userInfo?.id) {
+  if (userInfo?.name) {
     return null;
   }
 

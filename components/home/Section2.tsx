@@ -1,7 +1,7 @@
 import SectionContainer from "@/components/common/SectionContainer"
 import FeatureRow from "@/components/home/FeatureRow"
-import image1 from "@/assets/image/home/image_1.webp";
 
+const endpoint = process.env.NEXT_PUBLIC_BUCKET_ENDPOINT;
 
 const Section2 = () => {
   const features = [
@@ -35,7 +35,7 @@ const Section2 = () => {
       description: "We know image quality matters. That's why our tool keeps your photos sharp, detailedand in original resolution. Say goodbye to pixelated or blurry results every photostays clear and professional.",
     },
     {
-      images: [image1],
+      images: [`${endpoint}/home/image_1.webp`],
       title: (
         <>
           <span className="text-[#5B70F8]">Easy Operation & Multiple</span>{" "}

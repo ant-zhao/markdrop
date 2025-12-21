@@ -1,9 +1,13 @@
 import Image from "next/image";
 import SectionContainer from "@/components/common/SectionContainer";
-import image1 from "@/assets/image/home/Group69@2x.webp";
-import image2 from "@/assets/image/home/Group70@2x.webp";
-import image3 from "@/assets/image/home/Group71@2x.webp";
-import image4 from "@/assets/image/home/Group72@2x.webp";
+
+
+const endpoint = process.env.NEXT_PUBLIC_BUCKET_ENDPOINT;
+const image1 = `${endpoint}/home/Group69@2x.webp`;
+const image2 = `${endpoint}/home/Group70@2x.webp`;
+const image3 = `${endpoint}/home/Group71@2x.webp`;
+const image4 = `${endpoint}/home/Group72@2x.webp`;
+
 
 const Section3 = () => {
   const infos = [
@@ -39,7 +43,7 @@ const Section3 = () => {
           <div className="w-full md:w-3/5">
             {infos.map((info) => (
               <div className="flex items-center gap-4 pt-8" key={info.title}>
-                <Image
+                <img
                   src={info.icon}
                   alt="feature"
                   className="w-[4rem] h-[4rem]"
@@ -52,7 +56,7 @@ const Section3 = () => {
             ))}
           </div>
           <div className="w-full md:w-2/5">
-            <Image
+            <img
               src={image4}
               alt="feature"
               className="w-full h-auto"

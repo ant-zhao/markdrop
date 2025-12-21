@@ -4,6 +4,8 @@ import { DragEvent } from "react";
 import { useMaskStore } from "@/stores/useMaskStore";
 import HomeIcon2 from "@/assets/icon/HomeIcon2";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/stores/useUser";
+import { USER_MODE } from "@/types/user";
 
 const defaultImages = [
   "https://picsum.photos/80/80",
@@ -23,6 +25,7 @@ export default function ImageUpload({
 }: ImageUploadProps) {
   const router = useRouter();
   const { image, setImage } = useMaskStore();
+  const { userInfo, userMode } = useUserStore();
 
   const handleSetImage = (img: File) => {
     setImage(img);
@@ -39,6 +42,10 @@ export default function ImageUpload({
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    if (!userInfo?.name || userMode !== USER_MODE.LOGGED_IN) {
+      window.location.href = `/auth/login?redirect_uri=${encodeURIComponent(window.location.href)}`;
+      return;
+    }
     if (e.dataTransfer.files[0]) {
       handleSetImage(e.dataTransfer.files[0]);
     }
@@ -56,7 +63,19 @@ export default function ImageUpload({
       >
         <span className="text-3xl"><HomeIcon2 /></span>
         <span className="text-[#5B70F8] font-semibold">Upload Image</span>
-        <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
+        <input
+          type="file"
+          className="hidden"
+          accept="image/*"
+          onChange={handleFileChange}
+          onClick={(e) => {
+            if (!userInfo?.name || userMode !== USER_MODE.LOGGED_IN) {
+              e.preventDefault();
+              window.location.href = `/auth/login?redirect_uri=${encodeURIComponent(window.location.href)}`;
+              return;
+            }
+          }}
+        />
       </label>
 
       {/* 拖拽区域 */}

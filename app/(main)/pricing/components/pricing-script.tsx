@@ -2,9 +2,12 @@
 import { useEffect, useRef } from "react";
 import { usePlanStore } from "@/stores/usePlan";
 import { payApi } from "@/lib/api";
+import { useUserStore } from "@/stores/useUser";
+import { USER_MODE } from "@/types/user";
 
 export default () => {
   const { setSelectedPackageId, setLoading } = usePlanStore();
+  const { userInfo, userMode } = useUserStore();
   const loading = useRef(false);
 
   useEffect(() => {
@@ -12,6 +15,11 @@ export default () => {
   }, []);
 
   const startPay = async (planId?: number) => {
+    if (!userInfo?.name || userMode !== USER_MODE.LOGGED_IN) {
+      window.location.href = `/auth/login?redirect_uri=${encodeURIComponent(window.location.href)}`;
+      return;
+    }
+
     if (planId === undefined || loading.current) return;
     loading.current = true;
     setLoading(true);

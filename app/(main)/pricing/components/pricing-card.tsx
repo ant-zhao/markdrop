@@ -2,7 +2,11 @@ import { XIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import PayButton from "./pay-button";
 import CustomPlan from "./custom-plan";
-import "./pricing-card.css";
+
+/**
+ * 暂时没有 plan.plans.length > 0 的情况
+ */
+// import "./pricing-card.css";
 
 export default function PricingCard({ plan }: { plan: any }) {
   return (

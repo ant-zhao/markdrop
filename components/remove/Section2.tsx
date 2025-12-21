@@ -1,7 +1,6 @@
 "use client";
 
 import cx from 'classnames';
-import { toast } from "sonner";
 import { useEffect, useRef, useState } from "react";
 import { useMaskStore } from "@/stores/useMaskStore"
 import ImageSilder from "@/components/common/ImageSilder"
@@ -48,7 +47,7 @@ const Section2 = () => {
           taskId,
         });
         if (taskRes.code !== 10000) {
-          toast.error(taskRes.message);
+          window.toast?.error(taskRes.message);
           setMaskImage();
           resolve();
           return;
@@ -85,7 +84,7 @@ const Section2 = () => {
         fileSuffix: image.name.split(".").pop(),
       });
       if (fileRes.code !== 10000 || !fileRes.url) {
-        toast.error(fileRes.message);
+        window.toast?.error(fileRes.message);
         return;
       }
       const taskRes = await submitRemoveApi({
@@ -94,13 +93,13 @@ const Section2 = () => {
         bizCode: BizCode.MARK_DROP,
       });
       if (taskRes.code !== 10000) {
-        toast.error(taskRes.message);
+        window.toast?.error(taskRes.message);
         return;
       }
       await getTaskStatus(taskRes.data.taskId);
       cleanInterval();
     } catch (error) {
-      toast.error("Failed to submit remove task");
+      window.toast?.error("Failed to submit remove task");
       console.error(error);
     } finally {
       setLoading(false);
@@ -129,11 +128,11 @@ const Section2 = () => {
         }),
       ]);
       if (imageRes.code !== 10000 || !imageRes.url) {
-        toast.error(imageRes.message);
+        window.toast?.error(imageRes.message);
         return;
       }
       if (maskRes.code !== 10000 || !maskRes.url) {
-        toast.error(maskRes.message);
+        window.toast?.error(maskRes.message);
         return;
       }
       const taskRes = await submitRemoveApi({
@@ -143,13 +142,13 @@ const Section2 = () => {
         bizCode: BizCode.MARK_DROP,
       });
       if (taskRes.code !== 10000) {
-        toast.error(taskRes.message);
+        window.toast?.error(taskRes.message);
         return;
       }
       await getTaskStatus(taskRes.data.taskId);
       cleanInterval();
     } catch (error) {
-      toast.error("Failed to submit remove task");
+      window.toast?.error("Failed to submit remove task");
       console.error(error);
     } finally {
       setLoading(false);
@@ -182,7 +181,7 @@ const Section2 = () => {
         <div className={"w-full px-12 py-4 mt-4 rounded-sm " + (visible ? "bg-white shadow-md" : "")}>
           {url && <div className="w-full">
             <div className="relative w-full p-2 mb-4">
-              <ImageSilder left={url} right={removedUrl?.url} demo={false} />
+              <ImageSilder left={url} right={removedUrl?.url} />
               {/* {!maskImage && <MaskEditorDialog />} */}
               {loading ? <Loading /> : (!maskImage && <MaskEditorDialog />)}
             </div>

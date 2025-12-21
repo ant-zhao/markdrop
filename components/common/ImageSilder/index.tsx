@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import SliderButton from "@/assets/icon/SliderButton";
 import ImageSliderScript from "./ImageSliderScript";
 
@@ -8,19 +7,13 @@ export default function ImageSlider({
   left1,
   right,
   largeLine,
-  demo = true,
 }: {
   left: string;
   left1?: string;
   right?: string;
   largeLine?: boolean;
-  demo?: boolean;
 }) {
   const id = React.useId(); // ✅ 仅用于唯一 DOM id（SSR 安全）
-
-  if (left && right && demo) {
-    return null;
-  }
 
   return (
     <div
@@ -30,9 +23,8 @@ export default function ImageSlider({
     >
       <div className="absolute inset-0 select-none w-full h-full rounded-sm overflow-hidden cursor-pointer">
         <div className="w-full h-full pointer-events-none">
-          {right && (<Image
+          {right && (<img
             src={right}
-            fill
             alt="Image 1"
             className="object-cover w-full h-full"
           />)}
@@ -42,15 +34,13 @@ export default function ImageSlider({
           style={{ clipPath: `inset(0 ${right ? "50%" : 0} 0 0)` }}
           data-clip
         >
-          <Image
+          <img
             src={left}
-            fill
             alt="Image 2"
             className="object-cover w-full h-full"
           />
-          {left1 && (<Image
+          {left1 && (<img
             src={left1}
-            fill
             alt="Image 2-1"
             className="object-cover w-full h-full absolute top-0 left-0"
           />)}

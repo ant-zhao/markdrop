@@ -1,7 +1,7 @@
 "use client"
 
-import { useEffect } from "react";
-import { toast } from "sonner";
+import { useEffect, useState } from "react";
+import { toast as toastSonner, Toaster } from "sonner";
 import Script from "next/script";
 import { useConfigurationStore } from "@/stores/useConfig";
 import { SUCCESS_CODE, CacheKey } from "@/utils/constants";
@@ -11,19 +11,23 @@ import { USER_MODE } from "@/types/user";
 import { hashSHA256 } from "@/utils";
 
 export default function LayoutClientComponent() {
+  const [initialized, setInitialized] = useState(false);
   const { setGoogleLoaded } = useConfigurationStore();
   const { accessToken, setAccessToken, setUser, setUserMode } = useUserStore();
 
+  window.toast = toastSonner;
+
   const handleGoogleScriptLoad = () => {
-    console.log("Google script loaded");
     setGoogleLoaded(true);
   };
 
   useEffect(() => {
+    if (initialized) return;
     const accessToken = localStorage.getItem(hashSHA256(CacheKey.ACCESS_TOKEN));
     if (accessToken) {
       setAccessToken(accessToken);
     }
+    setInitialized(true);
   }, []);
 
   useEffect(() => {
@@ -37,7 +41,7 @@ export default function LayoutClientComponent() {
     }
     const res2 = await getUserInfoApi();
     if (res2.code !== SUCCESS_CODE) {
-      toast.error(res2.message);
+      window.toast?.error(res2.message);
       return;
     }
 
@@ -48,6 +52,10 @@ export default function LayoutClientComponent() {
 
   return (
     <>
+      {initialized && <Toaster
+        position="top-right" // 配置提示位置
+        duration={5000} // 提示显示时长
+      />}
       <Script
         src="https://accounts.google.com/gsi/client"
         strategy="afterInteractive"

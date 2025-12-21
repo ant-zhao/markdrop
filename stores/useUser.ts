@@ -2,7 +2,6 @@
 import { create } from "zustand";
 import { USER_MODE } from "@/types/user";
 import { loginApi } from "@/lib/api";
-import { toast } from "sonner";
 import { hashSHA256 } from "@/utils";
 import { CacheKey, SUCCESS_CODE } from "@/utils/constants";
 
@@ -16,6 +15,7 @@ export type User = {
 } | null;
 
 interface UserState {
+  loading: boolean;
   accessToken: string;
   userMode: USER_MODE;
   userInfo: User;
@@ -25,6 +25,7 @@ interface UserState {
   clearUser: () => void;
   handleCredentialResponse: (response: google.accounts.id.CredentialResponse) => Promise<any>;
   handleCodeVerifierResponse: (code: string) => Promise<any>;
+  setLoading: (loading: boolean) => void;
 }
 
 const handleCredentialResponse = async (response: google.accounts.id.CredentialResponse, set: (state: Partial<UserState>) => void) => {
@@ -32,13 +33,13 @@ const handleCredentialResponse = async (response: google.accounts.id.CredentialR
   const res = await loginApi({ idToken });
 
   if (res.code !== SUCCESS_CODE) {
-    toast.error(res.message);
+    window.toast?.error(res.message);
     return;
   }
 
   const { accessToken } = res.data;
   localStorage.setItem(hashSHA256(CacheKey.ACCESS_TOKEN), accessToken);
-  set({ accessToken });
+  set({ accessToken, loading: false });
 }
 
 const handleCodeVerifierResponse = async (
@@ -47,23 +48,24 @@ const handleCodeVerifierResponse = async (
 ) => {
   const codeVerifier = localStorage.getItem(hashSHA256(CacheKey.GOOGLE_CODE_VERIFIER));
   if (!codeVerifier) {
-    toast.error("Code verifier not found");
+    window.toast?.error("Code verifier not found");
     return;
   }
   localStorage.removeItem(hashSHA256(CacheKey.GOOGLE_CODE_VERIFIER));
   const res = await loginApi({ authorizationCode: code, codeVerifier });
 
   if (res.code !== SUCCESS_CODE) {
-    toast.error(res.message);
+    window.toast?.error(res.message);
     return;
   }
 
   const { accessToken } = res.data;
   localStorage.setItem(hashSHA256(CacheKey.ACCESS_TOKEN), accessToken);
-  set({ accessToken });
+  set({ accessToken, loading: false });
 }
 
 export const useUserStore = create<UserState>((set) => ({
+  loading: false,
   accessToken: "",
   userMode: USER_MODE.UNKNOWN,
   userInfo: null,
@@ -77,4 +79,5 @@ export const useUserStore = create<UserState>((set) => ({
   handleCodeVerifierResponse: (code: string) => {
     return handleCodeVerifierResponse(code, set);
   },
+  setLoading: (loading: boolean) => set({ loading }),
 }));

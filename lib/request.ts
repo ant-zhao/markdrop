@@ -11,7 +11,7 @@ import { CacheKey } from "@/utils/constants";
 
 const baseURL =
   typeof window === "undefined"
-    ? process.env.SERVER_API_BASE_URL // 服务端使用
+    ? process.env.NEXT_PUBLIC_API_SERVER_URL // 服务端使用
     : process.env.NEXT_PUBLIC_API_BASE_URL; // 客户端使用
 
 /**

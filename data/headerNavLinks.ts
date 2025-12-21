@@ -10,4 +10,6 @@ export const roundedHeaderPages = ["/", "/remove", "/privacy-policy", "/terms-se
 
 export const rectangleHeaderPages = ["/profile"];
 
+export const authPages = ['/remove', '/batch_remove', '/video_remove', '/pricing']
+
 export default headerNavLinks

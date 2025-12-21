@@ -4,31 +4,33 @@ import SectionContainer from "@/components/common/SectionContainer";
 import ImageUpload from "@/components/common/ImageUpload";
 import ImageSilder from "@/components/common/ImageSilder";
 
+const endpoint = process.env.NEXT_PUBLIC_BUCKET_ENDPOINT;
+
 const cases = [
   {
     label: "People",
-    left: require("@/assets/image/sample/people-watermark.webp"),
-    right: require("@/assets/image/sample/people-watermark-remover.webp"),
+    left: `${endpoint}/sample/people-watermark.webp`,
+    right: `${endpoint}/sample/people-watermark-remover.webp`,
   },
   {
     label: "Product",
-    left: require("@/assets/image/sample/products-watermark.webp"),
-    right: require("@/assets/image/sample/products-watermark-remover.webp"),
+    left: `${endpoint}/sample/products-watermark.webp`,
+    right: `${endpoint}/sample/products-watermark-remover.webp`,
   },
   {
     label: "Travel",
-    left: require("@/assets/image/sample/travel-watermark.webp"),
-    right: require("@/assets/image/sample/travel-watermark-remover.webp"),
+    left: `${endpoint}/sample/travel-watermark.webp`,
+    right: `${endpoint}/sample/travel-watermark-remover.webp`,
   },
   {
     label: "Logo",
-    left: require("@/assets/image/sample/logo-watermark.jpg"),
-    right: require("@/assets/image/sample/logo-watermark-remover.webp"),
+    left: `${endpoint}/sample/logo-watermark.jpg`,
+    right: `${endpoint}/sample/logo-watermark-remover.webp`,
   },
   {
     label: "Emoji",
-    left: require("@/assets/image/sample/emoji-watermark.webp"),
-    right: require("@/assets/image/sample/emoji-watermark-remover.webp"),
+    left: `${endpoint}/sample/emoji-watermark.webp`,
+    right: `${endpoint}/sample/emoji-watermark-remover.webp`,
   },
 ];
 

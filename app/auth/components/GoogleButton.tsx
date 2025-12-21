@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Loader } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "@/components/ui/button";
 import { useConfigurationStore } from "@/stores/useConfig";
@@ -8,7 +9,7 @@ import { googleOAuthURL } from "@/lib/utils";
 export default function GoogleButton({ redirectUri }: { redirectUri: string }) {
   const renderedRef = useRef(false);
   const { googleLoaded } = useConfigurationStore();
-  const { handleCredentialResponse } = useUserStore();
+  const { handleCredentialResponse, setLoading, loading } = useUserStore();
 
   // useEffect(() => {
   //   renderButton();
@@ -39,6 +40,7 @@ export default function GoogleButton({ redirectUri }: { redirectUri: string }) {
   }
 
   const onClick = async () => {
+    setLoading(true);
     const link = await googleOAuthURL(redirectUri);
     window.location.href = link;
   }
@@ -47,10 +49,11 @@ export default function GoogleButton({ redirectUri }: { redirectUri: string }) {
     <Button
       type="button"
       variant="outline"
+      disabled={loading}
       className="w-full flex items-center justify-center gap-2 border-gray-300 cursor-pointer hover:bg-[#5b70f8]/10"
       onClick={onClick}
     >
-      <FcGoogle size={20} />
+      {loading ? <Loader className="animate-spin" size={20} /> : <FcGoogle size={20} />}
       Continue with Google
     </Button>
   )

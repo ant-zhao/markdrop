@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Loader } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -122,7 +123,7 @@ export default function LoginForm() {
                 className="w-full cursor-pointer bg-[#5b70f8]/90 hover:bg-[#5b70f8]"
                 disabled={submitting}
               >
-                {submitting ? "Submitting..." : "Login"}
+                {submitting ? <Loader className="animate-spin" size={20} /> : "Login"}
               </Button>
             </form>
             <p className="text-sm text-gray-500 mt-6">
