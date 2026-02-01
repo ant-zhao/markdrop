@@ -1,11 +1,9 @@
-version: '3.8'
-
 services:
-  next-app:
+  markdrop-web:
     # 构建镜像（基于当前目录的Dockerfile）
     build: .
     # 容器名称
-    container_name: next-js-app
+    container_name: markdrop-web
     # 端口映射：服务器端口:容器端口（左侧可自定义，如80:3000）
     ports:
       - "3000:3000"
@@ -15,5 +13,5 @@ services:
     # 容器重启策略
     restart: always
     # （可选）数据卷挂载（若需持久化数据）
-    volumes:
-      - ./logs:/app/logs
+    # volumes:
+    #   - ./logs:/app/logs
