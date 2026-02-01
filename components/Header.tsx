@@ -1,12 +1,14 @@
 import cx from 'classnames';
 import siteMetadata from '@/data/siteMetadata'
+import Image from "next/image";
 import headerNavLinks, { roundedHeaderPages } from '@/data/headerNavLinks'
-import Logo from '@/components/Logo'
 import Link from '@/components/common/Link'
 import MobileNav from '@/components/MobileNav'
 import UserState from '@/components/UserState'
 import SectionContainer from "@/components/common/SectionContainer";
 import HeaderScript from './HeaderScript';
+import Logo from '../assets/image/logo.png';
+import LogoMini from '../assets/image/logo_mini.png';
 
 export default async function Header({
   customClass,
@@ -40,16 +42,18 @@ export default async function Header({
         >
           <Link href="/" aria-label={siteMetadata.headerTitle} className="flex-shrink-0">
             <div className="flex items-center justify-between">
-              <div className="mr-3 text-3xl">
-                <Logo />
+              <div className='sm:h-16 h-10'>
+                <Image
+                  alt='logo'
+                  className="hidden sm:block h-full w-fit"
+                  src={Logo}
+                />
+                <Image
+                  alt='logo'
+                  className="block sm:hidden h-full w-fit"
+                  src={LogoMini}
+                />
               </div>
-              {typeof siteMetadata.headerTitle === "string" ? (
-                <div className="hidden h-6 text-2xl font-semibold sm:block">
-                  {siteMetadata.headerTitle}
-                </div>
-              ) : (
-                siteMetadata.headerTitle
-              )}
             </div>
           </Link>
 

@@ -31,6 +31,7 @@ export default function FeatureRow({
               alt="feature"
               fill
               className="!static w-full h-auto"
+              priority={false}
             />
           </div>
         )}

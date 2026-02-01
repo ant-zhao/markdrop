@@ -7,6 +7,7 @@ import StatusComponent from "@/components/common/StatusComponent";
 export const metadata: Metadata = {
   title: "Mark Drop",
   description: "An AI watermark removal tool",
+  robots: 'noindex',
 };
 
 const geistSans = Geist({
