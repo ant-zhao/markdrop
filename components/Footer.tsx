@@ -1,8 +1,16 @@
 // components/Footer.tsx
 import { Fragment } from "react";
+import Link from "next/link";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { FaFacebookF, FaInstagram, FaYoutube, FaPinterestP, FaTiktok } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
+import LogoMini from '../assets/image/logo_mini.png';
+import Image from "next/image";
+import { AlipayIcon } from "@/assets/icon/Alipay";
+import { VisaIcon } from "@/assets/icon/Visa";
+import { MastercardIcon } from "@/assets/icon/MasterCard";
+
+const siteOrigin = process.env.NEXT_PUBLIC_SITE_ORIGIN;
 
 export default function Footer() {
   return (
@@ -11,7 +19,13 @@ export default function Footer() {
 
         {/* LOGO + 社交 */}
         <div>
-          <h2 className="font-bold text-lg mb-4">LOGO</h2>
+          <h2 className="font-bold text-lg mb-4 h-8">
+            <Image
+              alt='logo'
+              className="block h-full w-fit"
+              src={LogoMini}
+            />
+          </h2>
           <div className="flex space-x-4 mb-6">
             <FaFacebookF className="w-5 h-5 cursor-pointer" />
             <FaInstagram className="w-5 h-5 cursor-pointer" />
@@ -25,10 +39,10 @@ export default function Footer() {
         <div>
           <h3 className="font-semibold mb-4">HELP</h3>
           <ul className="space-y-2 text-sm">
-            <li>Return & Warranty</li>
-            <li>Shipping & Payment</li>
-            <li>Terms Of Service</li>
-            <li>Privacy Policy</li>
+            {/* <li>Return & Warranty</li>
+            <li>Shipping & Payment</li> */}
+            <li><Link href={`${siteOrigin}/terms-service`}>Terms Of Service</Link></li>
+            <li><Link href={`${siteOrigin}/privacy-policy`}>Privacy Policy</Link></li>
           </ul>
         </div>
 
@@ -48,7 +62,7 @@ export default function Footer() {
         </div>
 
         {/* INFORMATION */}
-        <div>
+        {/* <div>
           <h3 className="font-semibold mb-4">INFORMATION</h3>
           <ul className="space-y-2 text-sm">
             <li>Contact Us</li>
@@ -58,7 +72,7 @@ export default function Footer() {
             <li>Payment Method</li>
             <li>Wholesale</li>
           </ul>
-        </div>
+        </div> */}
 
         {/* contact us */}
         <div>
@@ -76,13 +90,12 @@ export default function Footer() {
         <div>
           {/* 语言和货币选择 */}
           <div className="flex space-x-4">
-            <Menu as="div" className="relative">
+            {/* <Menu as="div" className="relative">
               <MenuButton className="flex items-center px-4 leading-8 border-[0.5px] rounded-[2rem]">
                 <span className="pr-2">English</span>
                 <IoIosArrowDown />
               </MenuButton>
-              {/* TODO: */}
-              {/* <MenuItems anchor="top" modal={false} className="absolute mt-2 bg-white text-black rounded shadow">
+              <MenuItems anchor="top" modal={false} className="absolute mt-2 bg-white text-black rounded shadow">
                 <MenuItem as={Fragment}>
                   {({ active }) => (
                     <button className={`block px-4 py-2 ${active && "bg-gray-100"}`}>
@@ -97,15 +110,15 @@ export default function Footer() {
                     </button>
                   )}
                 </MenuItem>
-              </MenuItems> */}
-            </Menu>
+              </MenuItems>
+            </Menu> */}
 
-            <Menu as="div" className="relative">
+            {/* <Menu as="div" className="relative">
               <MenuButton className="flex items-center px-4 leading-8 border-[0.5px] rounded-[2rem]">
                 <span className="pr-2">China (CNY ¥)</span>
                 <IoIosArrowDown />
               </MenuButton>
-              {/* <MenuItems anchor="top" modal={false} className="absolute mt-2 bg-white text-black rounded shadow">
+              <MenuItems anchor="top" modal={false} className="absolute mt-2 bg-white text-black rounded shadow">
                 <MenuItem as={Fragment}>
                   {({ active }) => (
                     <button className={`block px-4 py-2 ${active && "bg-gray-100"}`}>
@@ -120,8 +133,8 @@ export default function Footer() {
                     </button>
                   )}
                 </MenuItem>
-              </MenuItems> */}
-            </Menu>
+              </MenuItems>
+            </Menu> */}
           </div>
 
           {/* 版权 */}
@@ -129,10 +142,13 @@ export default function Footer() {
         </div>
 
         {/* 支付方式 (示意) */}
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 text-2xl items-center">
+          <span><AlipayIcon /></span>
+          <span><VisaIcon /></span>
+          <span><MastercardIcon /></span>
+          {/* <img src="/mastercard.svg" alt="MasterCard" className="h-6" />
           <img src="/applepay.svg" alt="Apple Pay" className="h-6" />
-          <img src="/visa.svg" alt="Visa" className="h-6" />
-          <img src="/mastercard.svg" alt="MasterCard" className="h-6" />
+          <img src="/visa.svg" alt="Visa" className="h-6" /> */}
         </div>
       </div>
     </footer>
